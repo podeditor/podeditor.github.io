@@ -12,7 +12,7 @@ const checks = [
   ['Robots index, follow', html.includes('name="robots" content="index, follow')],
   ['Googlebot max-image-preview', html.includes('max-image-preview:large')],
   ['WebApplication Schema', html.includes('"@type":"WebApplication"')],
-  ['AggregateRating Schema', html.includes('"@type":"AggregateRating"')],
+  ['No Fake Reviews (Zero penalty risk)', !html.includes('"@type":"AggregateRating"')],
   ['HowTo Schema', html.includes('"@type":"HowTo"')],
   ['FAQPage Schema', html.includes('"@type":"FAQPage"')],
   ['BreadcrumbList Schema', html.includes('"@type":"BreadcrumbList"')],
