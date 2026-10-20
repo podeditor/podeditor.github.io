@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import confetti from 'canvas-confetti';
 import {
   Play,
@@ -108,6 +108,12 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
   const silenceRegionsRef = useRef<SilenceRegion[]>([]);
   silenceRegionsRef.current = silenceRegions;
 
+  // Kept speech segments
+  const keptSegments = useMemo(() => {
+    if (!audioBuffer) return [];
+    return calculateKeptSegments(audioBuffer.duration, silenceRegions);
+  }, [audioBuffer, silenceRegions]);
+
   // Recalculate Silence Detection
   const runSilenceDetection = useCallback(
     (buf: AudioBuffer) => {
@@ -116,6 +122,7 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
         maxSilenceDuration,
         naturalPadding,
       });
+      silenceRegionsRef.current = regions;
       setSilenceRegions(regions);
       const calculatedMetrics = calculateMetrics(buf.duration, regions);
       setMetrics(calculatedMetrics);
@@ -147,7 +154,7 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
   }, []);
 
   // Bake Background Waveform into Offscreen Canvas
-  const bakeBackgroundWaveform = useCallback(() => {
+  const bakeBackgroundWaveform = useCallback((regionsOverride?: SilenceRegion[]) => {
     const canvas = canvasRef.current;
     if (!canvas || !audioBuffer || !waveformPeaksRef.current) return;
 
@@ -155,7 +162,7 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
     const height = canvas.height;
     const duration = audioBuffer.duration;
     const peaks = waveformPeaksRef.current;
-    const regions = silenceRegionsRef.current;
+    const regions = regionsOverride || silenceRegionsRef.current;
     const isDark = document.documentElement.classList.contains('dark');
 
     // Create or resize offscreen canvas
@@ -580,9 +587,13 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
       setExportError(null);
       stopPlayback();
 
+      const segmentsToExport = keptSegments && keptSegments.length > 0
+        ? keptSegments
+        : calculateKeptSegments(audioBuffer.duration, silenceRegionsRef.current);
+
       const renderedBuffer = await renderEditedAudio(
         audioBuffer,
-        keptSegments,
+        segmentsToExport,
         { voicePolish, autoLevel },
         (progress) => setExportProgress(Math.min(90, Math.round(progress)))
       );

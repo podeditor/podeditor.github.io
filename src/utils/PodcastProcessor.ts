@@ -79,7 +79,8 @@ export async function decodeAudioFile(fileOrBuffer: File | ArrayBuffer): Promise
 }
 
 /**
- * Scan audio buffer for silent gaps based on RMS energy and natural padding.
+ * Scan audio buffer for silent gaps based on RMS energy, max silence duration, and natural padding.
+ * Trims excess dead air while preserving the target max silence duration as natural breathing room.
  */
 export function detectSilenceRegions(
   audioBuffer: AudioBuffer,
@@ -119,7 +120,7 @@ export function detectSilenceRegions(
     isSilentWindow[w] = rms < linearThreshold;
   }
 
-  // Group consecutive silent windows
+  // Group consecutive silent windows into raw silence gaps
   interface RawGap {
     start: number;
     end: number;
@@ -160,27 +161,33 @@ export function detectSilenceRegions(
     });
   }
 
-  // Filter and compute cut silence regions using maxSilenceDuration and naturalPadding
+  // Filter and compute cut silence regions using maxSilenceDuration and naturalPadding:
+  // Gaps shorter than maxSilenceDuration are kept as natural pauses.
+  // Gaps exceeding maxSilenceDuration have the excess dead air trimmed from the center,
+  // leaving exactly maxSilenceDuration (or naturalPadding * 2) as natural breathing room.
   const silenceRegions: SilenceRegion[] = [];
   let idCounter = 1;
 
   for (const gap of rawGaps) {
-    // Only gaps that exceed maxSilenceDuration are trimmed
-    if (gap.duration >= maxSilenceDuration) {
-      // Natural padding: Leave padding on speech boundaries
-      const safePadding = Math.min(naturalPadding, gap.duration * 0.4);
-      const cutStart = gap.start + safePadding;
-      const cutEnd = gap.end - safePadding;
+    if (gap.duration > maxSilenceDuration) {
+      // Amount of total pause to retain across both sides:
+      const retainTotal = Math.max(naturalPadding * 2, maxSilenceDuration);
 
-      // If cut length is significant (> 0.08s)
-      if (cutEnd - cutStart > 0.08) {
-        silenceRegions.push({
-          id: idCounter++,
-          start: Math.max(0, cutStart),
-          end: Math.min(duration, cutEnd),
-          duration: Math.max(0, cutEnd - cutStart),
-          cut: true,
-        });
+      if (gap.duration > retainTotal + 0.05) {
+        const retainEachSide = retainTotal / 2;
+        const cutStart = gap.start + retainEachSide;
+        const cutEnd = gap.end - retainEachSide;
+        const cutDuration = cutEnd - cutStart;
+
+        if (cutDuration > 0.05) {
+          silenceRegions.push({
+            id: idCounter++,
+            start: Math.max(0, cutStart),
+            end: Math.min(duration, cutEnd),
+            duration: cutDuration,
+            cut: true,
+          });
+        }
       }
     }
   }
@@ -264,7 +271,7 @@ export async function renderEditedAudio(
   const sampleRate = sourceBuffer.sampleRate;
   const numChannels = Math.min(2, sourceBuffer.numberOfChannels);
 
-  const safeSegments = keptSegments.length > 0
+  const safeSegments = keptSegments && keptSegments.length > 0
     ? keptSegments
     : [{ start: 0, end: sourceBuffer.duration }];
 
