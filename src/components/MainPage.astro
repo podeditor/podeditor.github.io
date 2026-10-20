@@ -11,8 +11,23 @@ const t = useTranslations(currentLang);
 ---
 
 <main class="min-h-screen">
+  <!-- Micro Breadcrumb for Search Engine Crawlers & Assistive Tech -->
+  <nav aria-label="Breadcrumb" class="pt-6 pb-2 px-4 max-w-4xl mx-auto flex items-center justify-center text-xs text-navy/60 dark:text-canvas/50">
+    <ol class="inline-flex items-center space-x-1.5 md:space-x-2">
+      <li class="inline-flex items-center">
+        <a href="/" class="hover:text-midnight dark:hover:text-lime transition-colors">
+          Home
+        </a>
+      </li>
+      <li class="inline-flex items-center">
+        <span class="mx-1 text-navy/30 dark:text-canvas/30">/</span>
+        <span class="font-semibold text-emerald-700 dark:text-lime">Audio Studio</span>
+      </li>
+    </ol>
+  </nav>
+
   <!-- 1. HERO SECTION -->
-  <section class="relative pt-10 pb-6 md:pt-16 md:pb-10 text-center px-4 max-w-4xl mx-auto">
+  <section class="relative pt-6 pb-6 md:pt-12 md:pb-10 text-center px-4 max-w-4xl mx-auto">
     <!-- Trust Pill -->
     <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-mint/60 dark:bg-navy border border-lime/60 text-xs font-bold text-midnight dark:text-lime mb-6 shadow-sm">
       <span class="w-2 h-2 rounded-full bg-lime animate-pulse"></span>
@@ -32,19 +47,19 @@ const t = useTranslations(currentLang);
     <!-- Key Trust Badges -->
     <div class="flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs sm:text-sm font-semibold text-navy/80 dark:text-canvas/70">
       <div class="flex items-center gap-1.5">
-        <svg class="w-4 h-4 text-emerald-600 dark:text-lime" fill="currentColor" viewBox="0 0 20 20">
+        <svg class="w-4 h-4 text-emerald-600 dark:text-lime" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
           <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
         </svg>
         <span>{t.hero.trustBadge1}</span>
       </div>
       <div class="flex items-center gap-1.5">
-        <svg class="w-4 h-4 text-emerald-600 dark:text-lime" fill="currentColor" viewBox="0 0 20 20">
+        <svg class="w-4 h-4 text-emerald-600 dark:text-lime" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
           <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
         </svg>
         <span>{t.hero.trustBadge2}</span>
       </div>
       <div class="flex items-center gap-1.5">
-        <svg class="w-4 h-4 text-emerald-600 dark:text-lime" fill="currentColor" viewBox="0 0 20 20">
+        <svg class="w-4 h-4 text-emerald-600 dark:text-lime" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
           <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
         </svg>
         <span>{t.hero.trustBadge3}</span>

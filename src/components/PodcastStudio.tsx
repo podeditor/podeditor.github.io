@@ -683,12 +683,16 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <label className="cursor-pointer bg-midnight hover:bg-midnight/90 dark:bg-lime dark:hover:bg-lime/90 text-canvas dark:text-midnight font-bold px-7 py-3.5 rounded-full shadow-lg transition-transform hover:scale-105 active:scale-95 flex items-center gap-2">
+            <label
+              aria-label={t.dropzone.browseFiles}
+              className="cursor-pointer bg-midnight hover:bg-midnight/90 dark:bg-lime dark:hover:bg-lime/90 text-canvas dark:text-midnight font-bold px-7 py-3.5 rounded-full shadow-lg transition-transform hover:scale-105 active:scale-95 flex items-center gap-2"
+            >
               <FileAudio className="w-5 h-5" />
               <span>{t.dropzone.browseFiles}</span>
               <input
                 type="file"
                 accept="audio/*"
+                aria-label="Upload audio file (MP3, WAV, M4A, OGG)"
                 className="hidden"
                 onChange={(e) => {
                   const file = e.target.files?.[0];
@@ -699,6 +703,7 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
 
             <button
               onClick={handleLoadSample}
+              aria-label={t.dropzone.trySample}
               className="bg-mint/70 hover:bg-mint dark:bg-navy hover:dark:bg-navy/80 text-midnight dark:text-lime font-bold px-6 py-3.5 rounded-full border border-lime/40 transition-transform hover:scale-105 active:scale-95 flex items-center gap-2"
             >
               <Sparkles className="w-5 h-5 text-midnight dark:text-lime" />
@@ -753,7 +758,8 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
                 setAudioBuffer(null);
                 setSilenceRegions([]);
               }}
-              className="text-xs font-semibold px-4 py-2 rounded-xl bg-canvas dark:bg-midnight text-navy dark:text-canvas/80 hover:text-midnight dark:hover:text-canvas hover:border-lime border border-transparent transition-colors flex items-center gap-1.5"
+              aria-label={t.export.loadNew}
+              className="text-xs font-semibold px-4 py-2 rounded-xl bg-canvas dark:bg-midnight text-navy dark:text-canvas/80 hover:text-midnight dark:hover:text-canvas hover:border-lime border border-transparent transition-colors flex items-center gap-1.5 focus-visible:ring-2 focus-visible:ring-lime"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>{t.export.loadNew}</span>
@@ -824,8 +830,9 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
               <div className="flex items-center gap-1.5 bg-canvas dark:bg-navy p-1 rounded-xl">
                 <button
                   onClick={() => setZoomLevel((z) => Math.max(1.0, parseFloat((z - 0.5).toFixed(1))))}
-                  className="p-1.5 rounded-lg hover:bg-white dark:hover:bg-midnight text-navy dark:text-canvas transition-colors"
+                  className="p-1.5 rounded-lg hover:bg-white dark:hover:bg-midnight text-navy dark:text-canvas transition-colors focus-visible:ring-2 focus-visible:ring-lime"
                   title={t.mastering.zoomOut}
+                  aria-label={t.mastering.zoomOut}
                 >
                   <ZoomOut className="w-4 h-4" />
                 </button>
@@ -834,15 +841,17 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
                 </span>
                 <button
                   onClick={() => setZoomLevel((z) => Math.min(4.0, parseFloat((z + 0.5).toFixed(1))))}
-                  className="p-1.5 rounded-lg hover:bg-white dark:hover:bg-midnight text-navy dark:text-canvas transition-colors"
+                  className="p-1.5 rounded-lg hover:bg-white dark:hover:bg-midnight text-navy dark:text-canvas transition-colors focus-visible:ring-2 focus-visible:ring-lime"
                   title={t.mastering.zoomIn}
+                  aria-label={t.mastering.zoomIn}
                 >
                   <ZoomIn className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => setZoomLevel(1.0)}
-                  className="p-1.5 rounded-lg hover:bg-white dark:hover:bg-midnight text-navy dark:text-canvas transition-colors"
+                  className="p-1.5 rounded-lg hover:bg-white dark:hover:bg-midnight text-navy dark:text-canvas transition-colors focus-visible:ring-2 focus-visible:ring-lime"
                   title={t.mastering.resetZoom}
+                  aria-label={t.mastering.resetZoom}
                 >
                   <Maximize2 className="w-3.5 h-3.5" />
                 </button>
@@ -857,9 +866,13 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
               <canvas
                 ref={canvasRef}
                 onClick={handleCanvasClick}
+                role="img"
+                aria-label="Interactive Audio Waveform Visualizer. Click highlighted red regions to toggle silence cuts."
                 className="block h-[180px]"
                 style={{ width: `${zoomLevel * 100}%`, minWidth: '100%' }}
-              />
+              >
+                <p>Interactive Audio Waveform Display. Play, scrub, and toggle silence regions to edit podcast audio.</p>
+              </canvas>
             </div>
 
             {/* Interactive Tip Banner */}
@@ -874,8 +887,9 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
               <div className="flex items-center gap-2">
                 <button
                   onClick={togglePlayPause}
-                  className="w-12 h-12 rounded-2xl bg-midnight hover:bg-midnight/90 dark:bg-lime dark:hover:bg-lime/90 text-canvas dark:text-midnight flex items-center justify-center shadow-md transition-transform hover:scale-105 active:scale-95"
+                  className="w-12 h-12 rounded-2xl bg-midnight hover:bg-midnight/90 dark:bg-lime dark:hover:bg-lime/90 text-canvas dark:text-midnight flex items-center justify-center shadow-md transition-transform hover:scale-105 active:scale-95 focus-visible:ring-2 focus-visible:ring-lime"
                   title={isPlaying ? t.mastering.pause : t.mastering.play}
+                  aria-label={isPlaying ? t.mastering.pause : t.mastering.play}
                 >
                   {isPlaying ? <Pause className="w-5 h-5 fill-current" /> : <Play className="w-5 h-5 ml-0.5 fill-current" />}
                 </button>
@@ -885,8 +899,9 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
                     stopPlayback();
                     seekTo(0);
                   }}
-                  className="w-10 h-10 rounded-xl bg-canvas dark:bg-navy hover:bg-slate-200 dark:hover:bg-navy/80 text-navy dark:text-canvas flex items-center justify-center transition-colors"
+                  className="w-10 h-10 rounded-xl bg-canvas dark:bg-navy hover:bg-slate-200 dark:hover:bg-navy/80 text-navy dark:text-canvas flex items-center justify-center transition-colors focus-visible:ring-2 focus-visible:ring-lime"
                   title={t.mastering.stop}
+                  aria-label={t.mastering.stop}
                 >
                   <Square className="w-4 h-4 fill-current" />
                 </button>
@@ -902,7 +917,8 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
                           sourceNodeRef.current.playbackRate.value = spd;
                         }
                       }}
-                      className={`px-2.5 py-1 rounded-lg transition-colors ${
+                      aria-label={`Set playback speed to ${spd}x`}
+                      className={`px-2.5 py-1 rounded-lg transition-colors focus-visible:ring-2 focus-visible:ring-lime ${
                         playbackSpeed === spd
                           ? 'bg-midnight text-canvas dark:bg-lime dark:text-midnight font-bold'
                           : 'text-navy dark:text-canvas/70 hover:text-midnight dark:hover:text-canvas'
@@ -921,6 +937,7 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
                     type="checkbox"
                     checked={skipSilencesInPreview}
                     onChange={(e) => setSkipSilencesInPreview(e.target.checked)}
+                    aria-label={t.mastering.skipSilencesPreview}
                     className="w-4 h-4 rounded text-lime focus:ring-lime"
                   />
                   <Zap className="w-4 h-4 text-amber-500" />
@@ -955,8 +972,9 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
                   max="-20"
                   step="1"
                   value={thresholdDb}
+                  aria-label={t.controls.thresholdLabel}
                   onChange={(e) => setThresholdDb(parseFloat(e.target.value))}
-                  className="w-full h-2 bg-slate-200 dark:bg-midnight rounded-lg cursor-pointer"
+                  className="w-full h-2 bg-slate-200 dark:bg-midnight rounded-lg cursor-pointer focus-visible:ring-2 focus-visible:ring-lime"
                 />
                 <p className="text-[11px] text-navy/70 dark:text-canvas/60">
                   {t.controls.thresholdDesc}
@@ -977,8 +995,9 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
                   max="2.5"
                   step="0.05"
                   value={maxSilenceDuration}
+                  aria-label={t.controls.maxSilenceLabel}
                   onChange={(e) => setMaxSilenceDuration(parseFloat(e.target.value))}
-                  className="w-full h-2 bg-slate-200 dark:bg-midnight rounded-lg cursor-pointer"
+                  className="w-full h-2 bg-slate-200 dark:bg-midnight rounded-lg cursor-pointer focus-visible:ring-2 focus-visible:ring-lime"
                 />
                 <p className="text-[11px] text-navy/70 dark:text-canvas/60">
                   {t.controls.maxSilenceDesc}
@@ -999,8 +1018,9 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
                   max="0.30"
                   step="0.01"
                   value={naturalPadding}
+                  aria-label={t.controls.paddingLabel}
                   onChange={(e) => setNaturalPadding(parseFloat(e.target.value))}
-                  className="w-full h-2 bg-slate-200 dark:bg-midnight rounded-lg cursor-pointer"
+                  className="w-full h-2 bg-slate-200 dark:bg-midnight rounded-lg cursor-pointer focus-visible:ring-2 focus-visible:ring-lime"
                 />
                 <p className="text-[11px] text-navy/70 dark:text-canvas/60">
                   {t.controls.paddingDesc}
@@ -1019,8 +1039,18 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
 
               {/* Toggle 1: Voice Polish */}
               <div
+                role="switch"
+                aria-checked={voicePolish}
+                tabIndex={0}
+                aria-label={t.mastering.voicePolishLabel}
                 onClick={() => setVoicePolish(!voicePolish)}
-                className={`p-4 rounded-2xl border transition-all cursor-pointer flex items-start gap-3 ${
+                onKeyDown={(e) => {
+                  if (e.key === ' ' || e.key === 'Enter') {
+                    e.preventDefault();
+                    setVoicePolish(!voicePolish);
+                  }
+                }}
+                className={`p-4 rounded-2xl border transition-all cursor-pointer flex items-start gap-3 focus-visible:ring-2 focus-visible:ring-lime ${
                   voicePolish
                     ? 'border-lime bg-mint/20 dark:bg-midnight/60 shadow-sm'
                     : 'border-slate-200 dark:border-midnight/40 bg-canvas/50 dark:bg-midnight/20 opacity-80'
@@ -1047,8 +1077,18 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
 
               {/* Toggle 2: Auto-Level Volume */}
               <div
+                role="switch"
+                aria-checked={autoLevel}
+                tabIndex={0}
+                aria-label={t.mastering.autoLevelLabel}
                 onClick={() => setAutoLevel(!autoLevel)}
-                className={`p-4 rounded-2xl border transition-all cursor-pointer flex items-start gap-3 ${
+                onKeyDown={(e) => {
+                  if (e.key === ' ' || e.key === 'Enter') {
+                    e.preventDefault();
+                    setAutoLevel(!autoLevel);
+                  }
+                }}
+                className={`p-4 rounded-2xl border transition-all cursor-pointer flex items-start gap-3 focus-visible:ring-2 focus-visible:ring-lime ${
                   autoLevel
                     ? 'border-lime bg-mint/20 dark:bg-midnight/60 shadow-sm'
                     : 'border-slate-200 dark:border-midnight/40 bg-canvas/50 dark:bg-midnight/20 opacity-80'

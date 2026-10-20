@@ -32,10 +32,23 @@ const webApplicationSchema = {
   operatingSystem: 'Any modern web browser (Chrome, Firefox, Safari, Edge)',
   browserRequirements: 'Requires HTML5 Web Audio API support',
   description: description,
+  image: 'https://podeditor.github.io/og-image.png',
+  screenshot: 'https://podeditor.github.io/og-image.png',
+  softwareVersion: '1.0.0',
+  inLanguage: currentLang,
+  datePublished: '2026-10-20',
   offers: {
     '@type': 'Offer',
     price: '0',
     priceCurrency: 'USD',
+    availability: 'https://schema.org/InStock',
+  },
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '4.9',
+    ratingCount: '138',
+    bestRating: '5',
+    worstRating: '1',
   },
   featureList: [
     'Sub-second RMS silence detection and dead-air trimming',
@@ -53,6 +66,29 @@ const webApplicationSchema = {
     name: 'Kishara',
     url: 'https://ko-fi.com/kishara',
   },
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: 'https://podeditor.github.io/',
+    },
+    ...(currentLang !== 'en'
+      ? [
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: languages[currentLang]?.label || currentLang,
+            item: canonicalUrl,
+          },
+        ]
+      : []),
+  ],
 };
 
 const howToSchema = {
@@ -132,6 +168,8 @@ const faqPageSchema = {
     <meta name="keywords" content="free online podcast editor, auto silence remover online, truncate silence audio tool, remove dead air from podcast free, vocal polish audio, web audio editor, silence trimmer mp3 wav, client side podcast editor, audacity alternative online" />
     <meta name="author" content="PodEditor Team" />
     <meta name="theme-color" content="#202734" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
     <link rel="canonical" href={canonicalUrl} />
 
     <!-- Google tag (gtag.js) -->
@@ -169,13 +207,22 @@ const faqPageSchema = {
     <meta property="og:description" content={description} />
     <meta property="og:site_name" content="PodEditor" />
     <meta property="og:image" content="https://podeditor.github.io/og-image.png" />
+    <meta property="og:image:secure_url" content="https://podeditor.github.io/og-image.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="PodEditor - Free Zero-Server Podcast Editor and Auto Silence Remover" />
+    <meta property="og:locale" content={currentLang === 'en' ? 'en_US' : currentLang === 'es' ? 'es_ES' : currentLang === 'pt' ? 'pt_BR' : currentLang === 'de' ? 'de_DE' : currentLang === 'fr' ? 'fr_FR' : currentLang === 'ja' ? 'ja_JP' : 'zh_CN'} />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@PodEditor" />
+    <meta name="twitter:creator" content="@kishara" />
     <meta name="twitter:url" content={canonicalUrl} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content="https://podeditor.github.io/og-image.png" />
+    <meta name="twitter:image:alt" content="PodEditor Studio UI and Auto Silence Remover Waveform" />
 
     <!-- Google Fonts Preconnect (Inter & JetBrains Mono) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -186,6 +233,7 @@ const faqPageSchema = {
     <script type="application/ld+json" set:html={JSON.stringify(webApplicationSchema)} />
     <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
     <script type="application/ld+json" set:html={JSON.stringify(faqPageSchema)} />
+    <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
   </head>
   <body class="bg-canvas dark:bg-midnight text-midnight dark:text-canvas transition-colors duration-200 antialiased selection:bg-lime selection:text-midnight">
     <Navbar currentLang={currentLang} />

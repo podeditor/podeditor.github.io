@@ -18,7 +18,7 @@ function getLangUrl(langCode: string) {
     <div class="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 border-b border-slate-200 dark:border-navy">
       <div class="flex items-center gap-3">
         <div class="w-8 h-8 rounded-xl bg-midnight dark:bg-lime text-canvas dark:text-midnight flex items-center justify-center font-black">
-          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+          <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 24 24">
             <path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3zm5 9a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21H9v2h6v-2h-2v-3.08A7 7 0 0 0 19 11h-2z"/>
           </svg>
         </div>
@@ -31,6 +31,7 @@ function getLangUrl(langCode: string) {
         href="https://ko-fi.com/kishara"
         target="_blank"
         rel="noopener noreferrer"
+        aria-label="Support the Developer on Ko-fi"
         class="flex items-center gap-2 px-4 py-2 rounded-full bg-mint/50 dark:bg-navy border border-lime/40 text-xs font-bold text-midnight dark:text-lime hover:bg-mint dark:hover:bg-navy/80 transition-all hover:scale-105"
       >
         <span class="text-rose-500">☕</span>
