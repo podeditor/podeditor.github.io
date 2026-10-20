@@ -1,0 +1,253 @@
+---
+import PodcastStudio from './PodcastStudio';
+import { useTranslations, type SupportedLanguage } from '../i18n/ui';
+
+interface Props {
+  currentLang?: SupportedLanguage;
+}
+
+const { currentLang = 'en' } = Astro.props;
+const t = useTranslations(currentLang);
+---
+
+<main class="min-h-screen">
+  <!-- 1. HERO SECTION -->
+  <section class="relative pt-10 pb-6 md:pt-16 md:pb-10 text-center px-4 max-w-4xl mx-auto">
+    <!-- Trust Pill -->
+    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-mint/60 dark:bg-navy border border-lime/60 text-xs font-bold text-midnight dark:text-lime mb-6 shadow-sm">
+      <span class="w-2 h-2 rounded-full bg-lime animate-pulse"></span>
+      <span>{t.navbar.badgeLocal} • {t.navbar.badgePrivacy}</span>
+    </div>
+
+    <!-- Main Title -->
+    <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-midnight dark:text-canvas tracking-tight leading-[1.15] mb-5">
+      {t.hero.title}
+    </h1>
+
+    <!-- Subtitle -->
+    <p class="text-base sm:text-lg md:text-xl text-navy dark:text-canvas/80 max-w-2xl mx-auto mb-8 font-normal leading-relaxed">
+      {t.hero.subtitle}
+    </p>
+
+    <!-- Key Trust Badges -->
+    <div class="flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs sm:text-sm font-semibold text-navy/80 dark:text-canvas/70">
+      <div class="flex items-center gap-1.5">
+        <svg class="w-4 h-4 text-emerald-600 dark:text-lime" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+        </svg>
+        <span>{t.hero.trustBadge1}</span>
+      </div>
+      <div class="flex items-center gap-1.5">
+        <svg class="w-4 h-4 text-emerald-600 dark:text-lime" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+        </svg>
+        <span>{t.hero.trustBadge2}</span>
+      </div>
+      <div class="flex items-center gap-1.5">
+        <svg class="w-4 h-4 text-emerald-600 dark:text-lime" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+        </svg>
+        <span>{t.hero.trustBadge3}</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. REACT ISLAND: WAVEFORM CANVAS & AUDIO ENGINE -->
+  <section class="w-full relative">
+    <PodcastStudio client:load currentLang={currentLang} />
+  </section>
+
+  <!-- 3. WHY CREATORS CHOOSE PODEDITOR (Features) -->
+  <section class="max-w-6xl mx-auto px-4 py-16 md:py-24">
+    <div class="text-center mb-12">
+      <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-midnight dark:text-canvas mb-3">
+        {t.features.title}
+      </h2>
+      <p class="text-sm sm:text-base text-navy/70 dark:text-canvas/60 max-w-xl mx-auto">
+        Engineered specifically for spoken-word podcasts, interviews, lectures, and voiceovers.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- Feature 1 -->
+      <div class="bg-white dark:bg-navy p-6 rounded-3xl border border-slate-200 dark:border-navy shadow-soft-card hover:border-lime/60 transition-all hover:-translate-y-1">
+        <div class="w-12 h-12 rounded-2xl bg-mint dark:bg-midnight flex items-center justify-center text-midnight dark:text-lime mb-5 font-bold">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+        </div>
+        <h3 class="font-bold text-lg text-midnight dark:text-canvas mb-2">{t.features.f1Title}</h3>
+        <p class="text-xs sm:text-sm text-navy/80 dark:text-canvas/70 leading-relaxed">{t.features.f1Desc}</p>
+      </div>
+
+      <!-- Feature 2 -->
+      <div class="bg-white dark:bg-navy p-6 rounded-3xl border border-slate-200 dark:border-navy shadow-soft-card hover:border-lime/60 transition-all hover:-translate-y-1">
+        <div class="w-12 h-12 rounded-2xl bg-mint dark:bg-midnight flex items-center justify-center text-midnight dark:text-lime mb-5 font-bold">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+        <h3 class="font-bold text-lg text-midnight dark:text-canvas mb-2">{t.features.f2Title}</h3>
+        <p class="text-xs sm:text-sm text-navy/80 dark:text-canvas/70 leading-relaxed">{t.features.f2Desc}</p>
+      </div>
+
+      <!-- Feature 3 -->
+      <div class="bg-white dark:bg-navy p-6 rounded-3xl border border-slate-200 dark:border-navy shadow-soft-card hover:border-lime/60 transition-all hover:-translate-y-1">
+        <div class="w-12 h-12 rounded-2xl bg-mint dark:bg-midnight flex items-center justify-center text-midnight dark:text-lime mb-5 font-bold">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <h3 class="font-bold text-lg text-midnight dark:text-canvas mb-2">{t.features.f3Title}</h3>
+        <p class="text-xs sm:text-sm text-navy/80 dark:text-canvas/70 leading-relaxed">{t.features.f3Desc}</p>
+      </div>
+
+      <!-- Feature 4 -->
+      <div class="bg-white dark:bg-navy p-6 rounded-3xl border border-slate-200 dark:border-navy shadow-soft-card hover:border-lime/60 transition-all hover:-translate-y-1">
+        <div class="w-12 h-12 rounded-2xl bg-mint dark:bg-midnight flex items-center justify-center text-midnight dark:text-lime mb-5 font-bold">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+          </svg>
+        </div>
+        <h3 class="font-bold text-lg text-midnight dark:text-canvas mb-2">{t.features.f4Title}</h3>
+        <p class="text-xs sm:text-sm text-navy/80 dark:text-canvas/70 leading-relaxed">{t.features.f4Desc}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. STEP-BY-STEP HOW TO (SEO Schema Target) -->
+  <section class="max-w-4xl mx-auto px-4 py-12 md:py-16">
+    <div class="text-center mb-12">
+      <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-midnight dark:text-canvas mb-3">
+        {t.howTo.title}
+      </h2>
+    </div>
+
+    <div class="space-y-6">
+      <div class="bg-white dark:bg-navy p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-navy shadow-soft-card flex items-start gap-4 sm:gap-6">
+        <div class="w-12 h-12 rounded-2xl bg-lime text-midnight font-black text-xl flex items-center justify-center shrink-0 shadow-sm">
+          1
+        </div>
+        <div>
+          <h3 class="text-lg sm:text-xl font-bold text-midnight dark:text-canvas mb-1.5">
+            {t.howTo.step1Title}
+          </h3>
+          <p class="text-sm text-navy/80 dark:text-canvas/70 leading-relaxed">
+            {t.howTo.step1Desc}
+          </p>
+        </div>
+      </div>
+
+      <div class="bg-white dark:bg-navy p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-navy shadow-soft-card flex items-start gap-4 sm:gap-6">
+        <div class="w-12 h-12 rounded-2xl bg-lime text-midnight font-black text-xl flex items-center justify-center shrink-0 shadow-sm">
+          2
+        </div>
+        <div>
+          <h3 class="text-lg sm:text-xl font-bold text-midnight dark:text-canvas mb-1.5">
+            {t.howTo.step2Title}
+          </h3>
+          <p class="text-sm text-navy/80 dark:text-canvas/70 leading-relaxed">
+            {t.howTo.step2Desc}
+          </p>
+        </div>
+      </div>
+
+      <div class="bg-white dark:bg-navy p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-navy shadow-soft-card flex items-start gap-4 sm:gap-6">
+        <div class="w-12 h-12 rounded-2xl bg-lime text-midnight font-black text-xl flex items-center justify-center shrink-0 shadow-sm">
+          3
+        </div>
+        <div>
+          <h3 class="text-lg sm:text-xl font-bold text-midnight dark:text-canvas mb-1.5">
+            {t.howTo.step3Title}
+          </h3>
+          <p class="text-sm text-navy/80 dark:text-canvas/70 leading-relaxed">
+            {t.howTo.step3Desc}
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. ARCHITECTURAL COMPARISON MATRIX -->
+  <section class="max-w-4xl mx-auto px-4 py-12">
+    <div class="bg-white dark:bg-navy rounded-3xl border border-lime/40 p-6 md:p-8 shadow-soft-card overflow-x-auto">
+      <h3 class="text-xl font-extrabold text-midnight dark:text-canvas mb-4 text-center">
+        How PodEditor Compares
+      </h3>
+      <table class="w-full text-left text-xs sm:text-sm">
+        <thead>
+          <tr class="border-b border-slate-200 dark:border-midnight/80 text-navy/70 dark:text-canvas/60">
+            <th class="py-3 px-2">Feature</th>
+            <th class="py-3 px-2 font-bold text-emerald-800 dark:text-lime">PodEditor</th>
+            <th class="py-3 px-2">Cloud AI Editors</th>
+            <th class="py-3 px-2">Audacity</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 dark:divide-midnight/40 text-midnight dark:text-canvas">
+          <tr>
+            <td class="py-3 px-2 font-semibold">Server Uploads</td>
+            <td class="py-3 px-2 font-bold text-emerald-700 dark:text-lime">Zero (100% Client)</td>
+            <td class="py-3 px-2 text-rose-500">Full Audio Upload</td>
+            <td class="py-3 px-2">Local Desktop</td>
+          </tr>
+          <tr>
+            <td class="py-3 px-2 font-semibold">Pricing</td>
+            <td class="py-3 px-2 font-bold text-emerald-700 dark:text-lime">100% Free Forever</td>
+            <td class="py-3 px-2 text-rose-500">$20 - $40 / month</td>
+            <td class="py-3 px-2">Free</td>
+          </tr>
+          <tr>
+            <td class="py-3 px-2 font-semibold">Auto Silence Removal</td>
+            <td class="py-3 px-2 font-bold text-emerald-700 dark:text-lime">Real-time RMS + Interactive</td>
+            <td class="py-3 px-2">Behind paywall</td>
+            <td class="py-3 px-2">Manual Truncate plugin</td>
+          </tr>
+          <tr>
+            <td class="py-3 px-2 font-semibold">Natural Micro-Fades</td>
+            <td class="py-3 px-2 font-bold text-emerald-700 dark:text-lime">15ms Cosine Fades</td>
+            <td class="py-3 px-2">Variable</td>
+            <td class="py-3 px-2">Manual crossfades</td>
+          </tr>
+          <tr>
+            <td class="py-3 px-2 font-semibold">Software Installation</td>
+            <td class="py-3 px-2 font-bold text-emerald-700 dark:text-lime">None (Direct Browser)</td>
+            <td class="py-3 px-2">Web / Desktop</td>
+            <td class="py-3 px-2 text-rose-500">Heavy Desktop App</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 6. FREQUENTLY ASKED QUESTIONS (FAQ Schema Target) -->
+  <section class="max-w-4xl mx-auto px-4 py-16">
+    <div class="text-center mb-12">
+      <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-midnight dark:text-canvas mb-3">
+        {t.faq.title}
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-white dark:bg-navy p-6 rounded-3xl border border-slate-200 dark:border-navy shadow-soft-card">
+        <h3 class="font-bold text-base text-midnight dark:text-canvas mb-2">{t.faq.q1}</h3>
+        <p class="text-xs sm:text-sm text-navy/80 dark:text-canvas/70 leading-relaxed">{t.faq.a1}</p>
+      </div>
+
+      <div class="bg-white dark:bg-navy p-6 rounded-3xl border border-slate-200 dark:border-navy shadow-soft-card">
+        <h3 class="font-bold text-base text-midnight dark:text-canvas mb-2">{t.faq.q2}</h3>
+        <p class="text-xs sm:text-sm text-navy/80 dark:text-canvas/70 leading-relaxed">{t.faq.a2}</p>
+      </div>
+
+      <div class="bg-white dark:bg-navy p-6 rounded-3xl border border-slate-200 dark:border-navy shadow-soft-card">
+        <h3 class="font-bold text-base text-midnight dark:text-canvas mb-2">{t.faq.q3}</h3>
+        <p class="text-xs sm:text-sm text-navy/80 dark:text-canvas/70 leading-relaxed">{t.faq.a3}</p>
+      </div>
+
+      <div class="bg-white dark:bg-navy p-6 rounded-3xl border border-slate-200 dark:border-navy shadow-soft-card">
+        <h3 class="font-bold text-base text-midnight dark:text-canvas mb-2">{t.faq.q4}</h3>
+        <p class="text-xs sm:text-sm text-navy/80 dark:text-canvas/70 leading-relaxed">{t.faq.a4}</p>
+      </div>
+    </div>
+  </section>
+</main>

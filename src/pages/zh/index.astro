@@ -1,0 +1,15 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import MainPage from '../../components/MainPage.astro';
+import { useTranslations } from '../../i18n/ui';
+
+const t = useTranslations('zh');
+---
+
+<Layout
+  currentLang="zh"
+  title={`${t.hero.title} | PodEditor`}
+  description={t.hero.subtitle}
+>
+  <MainPage currentLang="zh" />
+</Layout>

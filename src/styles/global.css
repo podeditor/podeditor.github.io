@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-canvas: #F9FCF6;
+    --card-surface: #FFFFFF;
+    --text-primary: #202734;
+    --text-secondary: #36415A;
+    --accent-lime: #B7D894;
+    --accent-mint: #E0F8C7;
+    --border-subtle: #E2E8F0;
+  }
+
+  .dark {
+    --bg-canvas: #202734;
+    --card-surface: #293243;
+    --text-primary: #F9FCF6;
+    --text-secondary: #CBD5E1;
+    --accent-lime: #B7D894;
+    --accent-mint: #36415A;
+    --border-subtle: #36415A;
+  }
+
+  body {
+    background-color: var(--bg-canvas);
+    color: var(--text-primary);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: background-color 0.25s ease, color 0.25s ease;
+  }
+}
+
+/* Custom Scrollbar for Studio Timeline and Audio scrubbing */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #B7D894;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #9bc273;
+}
+
+/* Custom Range Input styling */
+input[type="range"] {
+  accent-color: #B7D894;
+}
+
+/* Smooth canvas focus */
+canvas {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}

@@ -1,0 +1,106 @@
+{
+  "navbar": {
+    "brand": "PodEditor",
+    "tagline": "Éditeur de podcast sans serveur gratuit",
+    "badgeLocal": "100% Local & Privé",
+    "badgePrivacy": "Zéro téléversement serveur",
+    "supportDev": "Soutenir le projet",
+    "themeLight": "Mode Clair",
+    "themeDark": "Mode Sombre"
+  },
+  "hero": {
+    "title": "Éditeur de Podcast Gratuit Sans Serveur & Suppression Automatique des Silences",
+    "subtitle": "Détectez et supprimez automatiquement les temps morts, sublimez votre voix en un clic et exportez un son prêt pour la diffusion directement dans le navigateur. 100% côté client avec une confidentialité totale.",
+    "trustBadge1": "DSP 100% dans le navigateur",
+    "trustBadge2": "Zéro délai de transfert",
+    "trustBadge3": "Sans inscription"
+  },
+  "dropzone": {
+    "dragDropTitle": "Glissez-déposez votre audio de podcast ici",
+    "dragDropSubtitle": "Prend en charge MP3, WAV, M4A, AAC, OGG de toute durée",
+    "browseFiles": "Parcourir un fichier audio",
+    "trySample": "Ou essayez l'extrait de podcast interactif",
+    "loadingAudio": "Décodage local de la piste audio...",
+    "errorDecoding": "Impossible de décoder l'audio. Veuillez vérifier le format du fichier."
+  },
+  "metrics": {
+    "statsTitle": "Métriques de Montage & Silences",
+    "originalDuration": "Durée Initiale",
+    "editedDuration": "Nouvelle Durée Éditée",
+    "deadAirRemoved": "Silences Supprimés",
+    "timeSaved": "Temps Économisé",
+    "cutsCount": "Coupes Réalisées"
+  },
+  "controls": {
+    "sectionTitle": "Paramètres de Détection des Silences",
+    "thresholdLabel": "Seuil de Silence",
+    "thresholdDesc": "Niveau sonore en-dessous duquel l'audio est considéré comme un silence",
+    "maxSilenceLabel": "Durée Maximale de Silence",
+    "maxSilenceDesc": "Pause naturelle maximale à préserver ; les silences plus longs sont tronqués",
+    "paddingLabel": "Marge Naturelle",
+    "paddingDesc": "Préserve les attaques de consonnes et les respirations naturelles",
+    "recalculating": "Analyse de la forme d'onde...",
+    "toggleInstructions": "💡 Astuce : Cliquez sur n'importe quel bloc rouge sur la forme d'onde pour basculer entre Couper et Conserver"
+  },
+  "mastering": {
+    "sectionTitle": "Mastering Vocal Professionnel",
+    "voicePolishLabel": "Sublimateur de Voix Podcast",
+    "voicePolishDesc": "Filtre passe-haut à 80Hz + présence vocale à 3kHz + compression douce",
+    "autoLevelLabel": "Nivellement Automatique du Volume",
+    "autoLevelDesc": "Harmonise les voix douces et les rires forts aux normes de diffusion",
+    "speedLabel": "Vitesse d'Écoute",
+    "skipSilencesPreview": "Pré-écouter le Montage (Passer les Silences)",
+    "play": "Lecture",
+    "pause": "Pause",
+    "stop": "Arrêt",
+    "zoomIn": "Zoom avant",
+    "zoomOut": "Zoom arrière",
+    "resetZoom": "Ajuster la vue"
+  },
+  "export": {
+    "sectionTitle": "Exporter le Master Studio",
+    "formatLabel": "Format Audio",
+    "exportWav": "WAV (Master 16-bit sans perte)",
+    "exportMp3": "MP3 (Qualité diffusion 192kbps)",
+    "exportBtn": "Exporter le Podcast Édité",
+    "exporting": "Rendu audio et application des micro-fondus...",
+    "exportDone": "Exportation terminée ! Fichier téléchargé.",
+    "loadNew": "Éditer un autre fichier"
+  },
+  "features": {
+    "title": "Pourquoi les Podcasteurs Choisissent PodEditor",
+    "f1Title": "Confidentialité 100% Côté Client",
+    "f1Desc": "Vos enregistrements et entretiens confidentiels ne quittent jamais votre ordinateur. Traitement direct en mémoire.",
+    "f2Title": "Zéro Attente de Téléversement",
+    "f2Desc": "Plus besoin d'envoyer des fichiers WAV de 500 Mo sur un serveur distant. L'édition s'exécute à la vitesse de votre machine.",
+    "f3Title": "Micro-Fondus Naturels",
+    "f3Desc": "Des fondus croisés cosinus de 15ms à chaque coupure évitent tout clic, claquement ou rendu robotique.",
+    "f4Title": "Pré-écoute Non Destructive en Direct",
+    "f4Desc": "Écoutez instantanément votre épisode avec les blancs supprimés avant de finaliser l'exportation."
+  },
+  "howTo": {
+    "title": "Comment Supprimer les Silences en 3 Étapes",
+    "step1Title": "1. Chargez Votre Fichier Audio",
+    "step1Desc": "Glissez n'importe quel fichier MP3, WAV ou M4A. Le décodage est immédiat.",
+    "step2Title": "2. Ajustez les Curseurs de Silence",
+    "step2Desc": "Réglez le seuil et la durée maximale pour respecter le naturel de la conversation.",
+    "step3Title": "3. Masterisez et Exportez",
+    "step3Desc": "Activez le Sublimateur de Voix, pré-écoutez les coupes et exportez en WAV ou MP3 à 20x la vitesse réelle."
+  },
+  "faq": {
+    "title": "Questions Fréquentes",
+    "q1": "PodEditor est-il vraiment gratuit et sans serveur ?",
+    "a1": "Oui ! PodEditor fonctionne entièrement dans votre navigateur grâce à la Web Audio API et WebAssembly. Aucun compte, aucune restriction, et aucun octet envoyé vers un serveur.",
+    "q2": "Quels formats de fichiers sont pris en charge ?",
+    "a2": "Importez vos fichiers MP3, WAV, M4A, AAC, FLAC et OGG. Exportez en WAV 16-bit sans compression ou MP3 haute fidélité.",
+    "q3": "Comment fonctionne la suppression automatique ?",
+    "a3": "L'outil analyse en temps réel l'énergie RMS de l'onde sonore. Dès qu'un passage silencieux dépasse votre seuil et durée maximale, il est ciblé pour suppression tout en conservant une marge protectrice.",
+    "q4": "Puis-je conserver manuellement une pause voulue ?",
+    "a4": "Absolument ! Cliquez directement sur le bloc rouge de silence sur la forme d'onde pour le déverrouiller et le conserver."
+  },
+  "footer": {
+    "madeWith": "Conçu pour les créateurs et podcasteurs indépendants.",
+    "privacyNote": "Zéro pistage, zéro cookie, zéro envoi vers un serveur. 100% de confidentialité client.",
+    "supportLink": "Soutenir sur Ko-fi"
+  }
+}

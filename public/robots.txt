@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://podeditor.github.io/sitemap.xml

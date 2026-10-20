@@ -1,0 +1,163 @@
+---
+import { languages, type SupportedLanguage } from '../i18n/ui';
+import { useTranslations } from '../i18n/ui';
+
+interface Props {
+  currentLang?: SupportedLanguage;
+}
+
+const { currentLang = 'en' } = Astro.props;
+const t = useTranslations(currentLang);
+
+const currentLangConfig = languages[currentLang] || languages.en;
+
+// Helper to construct language URL
+function getLangUrl(langCode: string) {
+  return langCode === 'en' ? '/' : `/${langCode}`;
+}
+---
+
+<header class="sticky top-0 z-50 backdrop-blur-md bg-canvas/85 dark:bg-midnight/85 border-b border-lime/30 dark:border-navy transition-colors duration-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <!-- Brand Logo & 100% Local Badge -->
+    <div class="flex items-center gap-3">
+      <a href={getLangUrl(currentLang)} class="flex items-center gap-2.5 group">
+        <!-- Logo Icon with Sound Wave & Mic styling -->
+        <div class="w-9 h-9 rounded-xl bg-midnight dark:bg-lime text-canvas dark:text-midnight flex items-center justify-center font-black shadow-md transition-transform group-hover:scale-105">
+          <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+            <path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3zm5 9a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21H9v2h6v-2h-2v-3.08A7 7 0 0 0 19 11h-2z"/>
+          </svg>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-black text-lg tracking-tight text-midnight dark:text-canvas leading-none">
+            PodEditor
+          </span>
+          <span class="hidden md:inline text-[10px] text-navy/70 dark:text-canvas/60 font-mono tracking-wide mt-0.5">
+            zero-server podcast studio
+          </span>
+        </div>
+      </a>
+
+      <!-- 100% Local & Private Badge (Full on desktop, icon pill on mobile) -->
+      <div class="flex items-center gap-1.5 bg-mint/70 dark:bg-navy border border-lime/50 rounded-full py-1 px-2.5 text-xs font-bold text-midnight dark:text-lime shadow-sm">
+        <svg class="w-3.5 h-3.5 text-emerald-600 dark:text-lime" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+        </svg>
+        <span class="hidden sm:inline">{t.navbar.badgeLocal}</span>
+      </div>
+    </div>
+
+    <!-- Right Controls: 7-Language Dropdown + Theme Switcher + Support CTA -->
+    <div class="flex items-center gap-2 sm:gap-3">
+      <!-- 7-Language Selector Dropdown -->
+      <div class="relative group" id="lang-selector">
+        <button
+          type="button"
+          class="flex items-center gap-1.5 py-1.5 px-2.5 sm:px-3 rounded-full bg-white dark:bg-navy border border-slate-200 dark:border-navy text-xs font-bold text-midnight dark:text-canvas shadow-sm hover:border-lime transition-all focus:outline-none"
+          aria-haspopup="true"
+          aria-expanded="false"
+          id="lang-btn"
+        >
+          <span class="bg-lime/40 text-midnight dark:text-lime text-[10px] font-black px-1.5 py-0.5 rounded">
+            {currentLangConfig.badge}
+          </span>
+          <span class="hidden md:inline">{currentLangConfig.label}</span>
+          <svg class="w-3.5 h-3.5 text-navy dark:text-canvas/70 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+
+        <!-- Dropdown Menu -->
+        <div
+          class="absolute right-0 mt-2 w-44 rounded-2xl bg-white dark:bg-midnight border border-lime/40 dark:border-navy shadow-xl py-2 hidden group-hover:block hover:block z-50 animate-fade-in"
+          role="menu"
+        >
+          {Object.entries(languages).map(([key, lang]) => (
+            <a
+              href={getLangUrl(key)}
+              class={`flex items-center justify-between px-3.5 py-2 text-xs font-semibold hover:bg-mint/40 dark:hover:bg-navy transition-colors ${
+                currentLang === key
+                  ? 'text-midnight dark:text-lime font-bold bg-mint/20 dark:bg-navy/60'
+                  : 'text-navy dark:text-canvas/80'
+              }`}
+              role="menuitem"
+            >
+              <span class="flex items-center gap-2">
+                <span class="bg-slate-200 dark:bg-navy text-[10px] font-mono font-bold px-1 rounded text-midnight dark:text-canvas">
+                  {lang.badge}
+                </span>
+                <span>{lang.label}</span>
+              </span>
+              {currentLang === key && (
+                <svg class="w-3.5 h-3.5 text-emerald-600 dark:text-lime" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+              )}
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <!-- Light / Dark Mode Toggle Button -->
+      <button
+        id="theme-toggle"
+        type="button"
+        class="w-9 h-9 rounded-full bg-white dark:bg-navy border border-slate-200 dark:border-navy flex items-center justify-center text-midnight dark:text-lime shadow-sm hover:border-lime transition-all focus:outline-none"
+        aria-label="Toggle Dark Mode"
+      >
+        <!-- Sun icon (for dark mode) -->
+        <svg id="theme-sun" class="w-4 h-4 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 9H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+        <!-- Moon icon (for light mode) -->
+        <svg id="theme-moon" class="w-4 h-4 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        </svg>
+      </button>
+
+      <!-- Support the Developer CTA Button (Collapses to Icon on Tablet/Mobile) -->
+      <a
+        href="https://ko-fi.com/kishara"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="bg-lime hover:bg-lime/90 text-midnight font-bold py-2 px-3 sm:px-4 rounded-full shadow-md transition-transform hover:scale-105 active:scale-95 flex items-center gap-2 text-xs"
+        title="Support the Developer on Ko-fi"
+      >
+        <svg class="w-4 h-4 fill-current text-midnight" viewBox="0 0 24 24">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+        <span class="hidden md:inline">{t.navbar.supportDev}</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<script is:inline>
+  // Theme logic for instant non-flash rendering
+  function initTheme() {
+    const storedTheme = localStorage.getItem('theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const isDark = storedTheme === 'dark' || (!storedTheme && systemPrefersDark);
+
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+      document.getElementById('theme-sun')?.classList.remove('hidden');
+      document.getElementById('theme-moon')?.classList.add('hidden');
+    } else {
+      document.documentElement.classList.remove('dark');
+      document.getElementById('theme-moon')?.classList.remove('hidden');
+      document.getElementById('theme-sun')?.classList.add('hidden');
+    }
+  }
+
+  initTheme();
+
+  // Handle theme switcher click
+  document.getElementById('theme-toggle')?.addEventListener('click', () => {
+    const isDark = document.documentElement.classList.toggle('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    initTheme();
+    // Dispatch an event so React island canvas can redraw colors
+    window.dispatchEvent(new Event('theme-change'));
+  });
+</script>

@@ -1,0 +1,65 @@
+---
+import { languages, type SupportedLanguage, useTranslations } from '../i18n/ui';
+
+interface Props {
+  currentLang?: SupportedLanguage;
+}
+
+const { currentLang = 'en' } = Astro.props;
+const t = useTranslations(currentLang);
+
+function getLangUrl(langCode: string) {
+  return langCode === 'en' ? '/' : `/${langCode}`;
+}
+---
+
+<footer class="mt-20 border-t border-slate-200 dark:border-navy bg-white/50 dark:bg-navy/30 py-12 transition-colors">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 border-b border-slate-200 dark:border-navy">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-xl bg-midnight dark:bg-lime text-canvas dark:text-midnight flex items-center justify-center font-black">
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+            <path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3zm5 9a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21H9v2h6v-2h-2v-3.08A7 7 0 0 0 19 11h-2z"/>
+          </svg>
+        </div>
+        <span class="font-black text-lg text-midnight dark:text-canvas">PodEditor</span>
+        <span class="text-xs text-navy/60 dark:text-canvas/50">| 100% Client-Side Audio Studio</span>
+      </div>
+
+      <!-- Ko-fi developer support badge -->
+      <a
+        href="https://ko-fi.com/kishara"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="flex items-center gap-2 px-4 py-2 rounded-full bg-mint/50 dark:bg-navy border border-lime/40 text-xs font-bold text-midnight dark:text-lime hover:bg-mint dark:hover:bg-navy/80 transition-all hover:scale-105"
+      >
+        <span class="text-rose-500">☕</span>
+        <span>{t.footer.supportLink}</span>
+      </a>
+    </div>
+
+    <!-- Language Sitemap links in footer -->
+    <div class="py-6 flex flex-wrap items-center justify-center gap-3 text-xs text-navy/70 dark:text-canvas/60">
+      <span class="font-bold text-midnight dark:text-canvas">Languages:</span>
+      {Object.entries(languages).map(([key, lang]) => (
+        <a
+          href={getLangUrl(key)}
+          class={`hover:text-midnight dark:hover:text-lime underline-offset-4 hover:underline ${
+            currentLang === key ? 'font-bold text-emerald-700 dark:text-lime' : ''
+          }`}
+        >
+          {lang.label}
+        </a>
+      ))}
+    </div>
+
+    <!-- Copyright & Privacy Guarantee -->
+    <div class="text-center text-xs text-navy/60 dark:text-canvas/50 space-y-1">
+      <p>{t.footer.madeWith}</p>
+      <p>{t.footer.privacyNote}</p>
+      <p class="text-[11px] pt-2 text-navy/40 dark:text-canvas/30 font-mono">
+        podeditor.github.io • MIT Licensed • Free & Open Audio Technology
+      </p>
+    </div>
+  </div>
+</footer>

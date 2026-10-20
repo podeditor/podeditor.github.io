@@ -1,0 +1,106 @@
+{
+  "navbar": {
+    "brand": "PodEditor",
+    "tagline": "Free Zero-Server Podcast Editor",
+    "badgeLocal": "100% Local & Private",
+    "badgePrivacy": "Zero Server Uploads",
+    "supportDev": "Support Developer",
+    "themeLight": "Light Mode",
+    "themeDark": "Dark Mode"
+  },
+  "hero": {
+    "title": "Free Zero-Server Podcast Editor & Auto Silence Remover",
+    "subtitle": "Automatically detect and strip dead air, master voice clarity with one click, and export studio-ready audio directly in your browser. 100% client-side with zero server uploads.",
+    "trustBadge1": "100% Client-Side DSP",
+    "trustBadge2": "Zero Upload Wait Times",
+    "trustBadge3": "No Login or Subscription"
+  },
+  "dropzone": {
+    "dragDropTitle": "Drag & drop your podcast audio here",
+    "dragDropSubtitle": "Supports MP3, WAV, M4A, AAC, OGG of any duration",
+    "browseFiles": "Browse Audio File",
+    "trySample": "Try Interactive Sample Podcast",
+    "loadingAudio": "Decoding audio track locally...",
+    "errorDecoding": "Unable to decode audio. Please ensure the file is a valid audio format."
+  },
+  "metrics": {
+    "statsTitle": "Live Editing & Dead Air Metrics",
+    "originalDuration": "Original Length",
+    "editedDuration": "Edited Length",
+    "deadAirRemoved": "Dead Air Stripped",
+    "timeSaved": "Time Saved",
+    "cutsCount": "Silence Cuts"
+  },
+  "controls": {
+    "sectionTitle": "Auto Silence Remover Controls",
+    "thresholdLabel": "Silence Threshold",
+    "thresholdDesc": "Noise floor level below which audio is flagged as silence",
+    "maxSilenceLabel": "Max Silence Duration",
+    "maxSilenceDesc": "Maximum natural pause to retain; gaps longer than this get trimmed",
+    "paddingLabel": "Natural Padding",
+    "paddingDesc": "Protects word beginnings, breathing room, and consonant attacks",
+    "recalculating": "Scanning waveform...",
+    "toggleInstructions": "💡 Tip: Click any red silence block on the waveform canvas to toggle between Cut and Keep"
+  },
+  "mastering": {
+    "sectionTitle": "Pro Podcast Mastering",
+    "voicePolishLabel": "Podcast Voice Polish",
+    "voicePolishDesc": "80Hz rumble cut + 3kHz vocal presence + warm leveling compressor",
+    "autoLevelLabel": "Auto-Level Volume",
+    "autoLevelDesc": "Normalizes quiet speakers and loud peaks to broadcast standards",
+    "speedLabel": "Preview Speed",
+    "skipSilencesPreview": "Audition Edits (Skip Silences)",
+    "play": "Play",
+    "pause": "Pause",
+    "stop": "Stop",
+    "zoomIn": "Zoom In",
+    "zoomOut": "Zoom Out",
+    "resetZoom": "Fit View"
+  },
+  "export": {
+    "sectionTitle": "Export Studio Master",
+    "formatLabel": "Format",
+    "exportWav": "WAV (Lossless 16-bit Master)",
+    "exportMp3": "MP3 (Broadcast Quality 192kbps)",
+    "exportBtn": "Export Edited Podcast",
+    "exporting": "Rendering audio & applying micro-fades...",
+    "exportDone": "Export Complete! File downloaded.",
+    "loadNew": "Edit Another Recording"
+  },
+  "features": {
+    "title": "Why Creators Edit with PodEditor",
+    "f1Title": "100% Client-Side Privacy",
+    "f1Desc": "Your confidential recordings and interviews never leave your computer. Everything runs in-memory via the Web Audio API.",
+    "f2Title": "Zero Server Upload Delays",
+    "f2Desc": "No uploading massive 500MB WAV files to cloud servers. Edits happen instantaneously right on your local hardware.",
+    "f3Title": "Natural Micro-Crossfades",
+    "f3Desc": "15ms cosine crossfades at every cut point prevent jarring audio pops, clicks, or robotic cadence.",
+    "f4Title": "Live Non-Destructive Audition",
+    "f4Desc": "Listen to your edited episode in real time with the Skip Silences player before committing to an export."
+  },
+  "howTo": {
+    "title": "How to Auto-Remove Dead Air in 3 Simple Steps",
+    "step1Title": "1. Load Local Audio",
+    "step1Desc": "Drag and drop any MP3, WAV, or M4A file into the browser. Decoding happens locally in seconds.",
+    "step2Title": "2. Fine-Tune Silence Sliders",
+    "step2Desc": "Adjust silence threshold (dB) and max silence duration to match your podcast's conversational tempo.",
+    "step3Title": "3. Polish & Export",
+    "step3Desc": "Toggle Podcast Voice Polish for broadcast clarity, audition the cuts, and export a master WAV or MP3 file at 20x speed."
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "q1": "Is PodEditor truly free and zero-server?",
+    "a1": "Yes! PodEditor runs 100% in your browser using the HTML5 Web Audio API and WebAssembly. No account is required, no usage limits exist, and not a single byte of your audio is ever sent to a remote server.",
+    "q2": "What audio file formats are supported?",
+    "a2": "You can import MP3, WAV, M4A, AAC, FLAC, and OGG files. You can export studio-grade 16-bit uncompressed WAV or high-bitrate MP3.",
+    "q3": "How does the auto silence remover work?",
+    "a3": "PodEditor performs real-time RMS (Root Mean Square) energy scanning across your audio waveform. It marks audio below your chosen threshold that exceeds your max silence limit, leaving natural pauses intact.",
+    "q4": "Can I manually keep or restore a silence?",
+    "a4": "Yes! You can click directly on any highlighted silence region on the waveform to toggle between Cut (red strip) and Keep (mint speech)."
+  },
+  "footer": {
+    "madeWith": "Engineered for independent podcasters and creators.",
+    "privacyNote": "Zero tracking, zero cookies, zero server uploads. 100% client-side privacy.",
+    "supportLink": "Support on Ko-fi"
+  }
+}

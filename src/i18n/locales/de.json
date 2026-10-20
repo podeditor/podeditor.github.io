@@ -1,0 +1,106 @@
+{
+  "navbar": {
+    "brand": "PodEditor",
+    "tagline": "Kostenloser serverloser Podcast-Editor",
+    "badgeLocal": "100% Lokal & Privat",
+    "badgePrivacy": "Keine Server-Uploads",
+    "supportDev": "Entwickler unterstützen",
+    "themeLight": "Heller Modus",
+    "themeDark": "Dunkler Modus"
+  },
+  "hero": {
+    "title": "Kostenloser Serverloser Podcast-Editor & Stille-Entferner",
+    "subtitle": "Erkennen und entfernen Sie störende Pausen automatisch, verbessern Sie Stimmen mit einem Klick und exportieren Sie Master-Audio direkt im Browser. 100% clientseitig mit maximalem Datenschutz.",
+    "trustBadge1": "100% Client-DSP",
+    "trustBadge2": "Keine Upload-Wartezeiten",
+    "trustBadge3": "Ohne Registrierung"
+  },
+  "dropzone": {
+    "dragDropTitle": "Podcast-Audiodatei hierher ziehen",
+    "dragDropSubtitle": "Unterstützt MP3, WAV, M4A, AAC, OGG jeder Länge",
+    "browseFiles": "Audiodatei auswählen",
+    "trySample": "Oder interaktiven Beispiel-Podcast testen",
+    "loadingAudio": "Audiospur wird lokal dekodiert...",
+    "errorDecoding": "Audio konnte nicht dekodiert werden. Bitte prüfen Sie das Dateiformat."
+  },
+  "metrics": {
+    "statsTitle": "Bearbeitungs- & Pausen-Statistiken",
+    "originalDuration": "Ursprüngliche Dauer",
+    "editedDuration": "Neue Schnittdauer",
+    "deadAirRemoved": "Entfernte Stille",
+    "timeSaved": "Eingesparte Zeit",
+    "cutsCount": "Schnitte insgesamt"
+  },
+  "controls": {
+    "sectionTitle": "Steuerung der automatischen Stille-Erkennung",
+    "thresholdLabel": "Stille-Schwellenwert",
+    "thresholdDesc": "Pegel, unter dem das Audiosignal als Sprechpause gewertet wird",
+    "maxSilenceLabel": "Max. Pausendauer",
+    "maxSilenceDesc": "Längste erlaubte natürliche Pause; längere Leerläufe werden getrimmt",
+    "paddingLabel": "Natürlicher Puffer",
+    "paddingDesc": "Schützt Wortanfänge, Konsonanten und natürliche Atemzüge",
+    "recalculating": "Wellenform wird analysiert...",
+    "toggleInstructions": "💡 Tipp: Klicken Sie auf einen roten Pausenblock in der Wellenform, um zwischen Schneiden und Behalten umzuschalten"
+  },
+  "mastering": {
+    "sectionTitle": "Professionelles Podcast-Mastering",
+    "voicePolishLabel": "Stimm-Optimierung",
+    "voicePolishDesc": "80Hz Hochpassfilter + 3kHz Präsenzanhebung + sanfter Stimmkompressor",
+    "autoLevelLabel": "Automatische Lautstärke-Angleichung",
+    "autoLevelDesc": "Gleicht leise Sprecher und laute Spitzen auf Broadcast-Niveau an",
+    "speedLabel": "Wiedergabetempo",
+    "skipSilencesPreview": "Schnitt vorhören (Pausen überspringen)",
+    "play": "Abspielen",
+    "pause": "Pause",
+    "stop": "Stopp",
+    "zoomIn": "Vergrößern",
+    "zoomOut": "Verkleinern",
+    "resetZoom": "Gesamtansicht"
+  },
+  "export": {
+    "sectionTitle": "Studio-Master exportieren",
+    "formatLabel": "Audioformat",
+    "exportWav": "WAV (Verlustfreier 16-Bit Master)",
+    "exportMp3": "MP3 (Rundfunkqualität 192kbps)",
+    "exportBtn": "Bearbeiteten Podcast exportieren",
+    "exporting": "Audio wird gerendert & Überblendungen berechnet...",
+    "exportDone": "Export abgeschlossen! Datei heruntergeladen.",
+    "loadNew": "Weitere Aufnahme bearbeiten"
+  },
+  "features": {
+    "title": "Warum Podcaster PodEditor schätzen",
+    "f1Title": "100% Datenschutz vor Ort",
+    "f1Desc": "Ihre vertraulichen Aufnahmen und Interviews verlassen niemals Ihren PC. Alles läuft im Arbeitsspeicher über die Web Audio API.",
+    "f2Title": "Keine zeitraubenden Uploads",
+    "f2Desc": "Kein Hochladen riesiger WAV-Dateien in die Cloud. Die Bearbeitung erfolgt sofort mit voller CPU-Leistung.",
+    "f3Title": "Nahtlose Mikro-Crossfades",
+    "f3Desc": "15ms Cosinus-Überblendungen an jeder Schnittstelle verhindern Knackser oder unnatürliche Klangabbrüche.",
+    "f4Title": "Echtzeit-Schnitt-Vorhören",
+    "f4Desc": "Hören Sie das fertige Ergebnis sofort mit übersprungenen Pausen vor, bevor Sie die Datei speichern."
+  },
+  "howTo": {
+    "title": "In 3 einfachen Schritten Sprechpausen entfernen",
+    "step1Title": "1. Lokale Audiodatei laden",
+    "step1Desc": "Ziehen Sie eine beliebige MP3-, WAV- oder M4A-Datei in das Fenster. Sie wird direkt dekodiert.",
+    "step2Title": "2. Schieberegler feinjustieren",
+    "step2Desc": "Passen Sie Schwellenwert und maximale Pausendauer an den Rhythmus Ihres Gesprächs an.",
+    "step3Title": "3. Mastern & Exportieren",
+    "step3Desc": "Aktivieren Sie die Stimm-Optimierung, prüfen Sie die Schnitte und exportieren Sie in WAV oder MP3 mit 20-facher Geschwindigkeit."
+  },
+  "faq": {
+    "title": "Häufig gestellte Fragen",
+    "q1": "Ist PodEditor wirklich kostenlos und serverlos?",
+    "a1": "Ja! PodEditor läuft vollständig in Ihrem Browser dank moderner Web Audio API und WebAssembly. Keine Accounts, keine Datenübertragung an Server.",
+    "q2": "Welche Audioformate werden unterstützt?",
+    "a2": "Sie können MP3, WAV, M4A, AAC, FLAC und OGG importieren. Der Export erfolgt als unkomprimiertes 16-Bit WAV oder hochauflösendes MP3.",
+    "q3": "Wie funktioniert die automatische Stille-Erkennung?",
+    "a3": "Es scannt in Echtzeit die RMS-Lautstärke der Spur. Abschnitte unterhalb Ihres Grenzwerts, die das Zeitlimit überschreiten, werden automatisch markiert.",
+    "q4": "Kann ich eine Pause manuell behalten?",
+    "a4": "Ja! Klicken Sie einfach auf einen roten Pausenblock in der interaktiven Wellenform, um ihn zu entsperren und beizubehalten."
+  },
+  "footer": {
+    "madeWith": "Entwickelt für unabhängige Podcaster und Kreative.",
+    "privacyNote": "Kein Tracking, keine Cookies, keine Server-Uploads. 100% Privatsphäre im Browser.",
+    "supportLink": "Auf Ko-fi unterstützen"
+  }
+}

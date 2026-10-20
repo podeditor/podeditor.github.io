@@ -1,0 +1,106 @@
+{
+  "navbar": {
+    "brand": "PodEditor",
+    "tagline": "Editor de podcasts sin servidor gratuito",
+    "badgeLocal": "100% Local y Privado",
+    "badgePrivacy": "Cero subidas al servidor",
+    "supportDev": "Apoyar al creador",
+    "themeLight": "Modo Claro",
+    "themeDark": "Modo Oscuro"
+  },
+  "hero": {
+    "title": "Editor de Podcasts Gratuito Sin Servidor y Eliminador Automático de Silencios",
+    "subtitle": "Detecta y elimina silencios automáticamente, mejora la claridad vocal con un clic y exporta audio listo para estudio en tu navegador. 100% en el cliente con privacidad total.",
+    "trustBadge1": "DSP 100% en el cliente",
+    "trustBadge2": "Sin esperas de subida",
+    "trustBadge3": "Sin registro ni suscripción"
+  },
+  "dropzone": {
+    "dragDropTitle": "Arrastra y suelta tu archivo de audio aquí",
+    "dragDropSubtitle": "Compatible con MP3, WAV, M4A, AAC, OGG de cualquier duración",
+    "browseFiles": "Seleccionar archivo de audio",
+    "trySample": "Probar audio de ejemplo interactivo",
+    "loadingAudio": "Decodificando pista de audio localmente...",
+    "errorDecoding": "No se pudo decodificar el audio. Asegúrate de que el formato sea válido."
+  },
+  "metrics": {
+    "statsTitle": "Métricas de Edición y Silencios",
+    "originalDuration": "Duración Original",
+    "editedDuration": "Nueva Duración Editada",
+    "deadAirRemoved": "Silencio Eliminado",
+    "timeSaved": "Tiempo Ahorrado",
+    "cutsCount": "Cortes Realizados"
+  },
+  "controls": {
+    "sectionTitle": "Controles de Eliminación de Silencios",
+    "thresholdLabel": "Umbral de Silencio",
+    "thresholdDesc": "Nivel de ruido por debajo del cual se considera silencio",
+    "maxSilenceLabel": "Duración Máxima de Silencio",
+    "maxSilenceDesc": "Pausa natural máxima a conservar; las pausas más largas se recortan",
+    "paddingLabel": "Margen Natural",
+    "paddingDesc": "Protege los inicios de palabras y la respiración natural",
+    "recalculating": "Escaneando forma de onda...",
+    "toggleInstructions": "💡 Consejo: Haz clic en cualquier bloque rojo de silencio para alternar entre Cortar y Conservar"
+  },
+  "mastering": {
+    "sectionTitle": "Masterización Profesional de Voces",
+    "voicePolishLabel": "Pulido de Voz para Podcast",
+    "voicePolishDesc": "Filtro paso alto a 80Hz + realce a 3kHz + compresión vocal cálida",
+    "autoLevelLabel": "Nivelación Automática de Volumen",
+    "autoLevelDesc": "Normaliza voces suaves y risas fuertes a estándares de transmisión",
+    "speedLabel": "Velocidad de Escucha",
+    "skipSilencesPreview": "Escuchar Edición (Omitir Silencios)",
+    "play": "Reproducir",
+    "pause": "Pausar",
+    "stop": "Detener",
+    "zoomIn": "Acercar",
+    "zoomOut": "Alejar",
+    "resetZoom": "Ajustar Vista"
+  },
+  "export": {
+    "sectionTitle": "Exportar Master de Estudio",
+    "formatLabel": "Formato de Audio",
+    "exportWav": "WAV (Master sin pérdidas 16-bit)",
+    "exportMp3": "MP3 (Calidad de transmisión 192kbps)",
+    "exportBtn": "Exportar Podcast Editado",
+    "exporting": "Renderizando audio y aplicando microfundidos...",
+    "exportDone": "¡Exportación completada! Archivo descargado.",
+    "loadNew": "Editar otra grabación"
+  },
+  "features": {
+    "title": "¿Por qué elegir PodEditor?",
+    "f1Title": "Privacidad 100% en el Cliente",
+    "f1Desc": "Tus grabaciones y entrevistas confidenciales nunca salen de tu ordenador. Todo ocurre en memoria.",
+    "f2Title": "Cero Esperas de Subida",
+    "f2Desc": "Sin subir archivos gigantes a la nube. La edición es instantánea en tu propio procesador.",
+    "f3Title": "Microfundidos Naturales",
+    "f3Desc": "Fundidos cruzados de 15ms eliminan clics y chasquidos, garantizando una cadencia fluida.",
+    "f4Title": "Preescucha en Tiempo Real",
+    "f4Desc": "Audiciona tu episodio editado con el modo Saltar Silencios antes de exportar."
+  },
+  "howTo": {
+    "title": "Cómo eliminar silencios en 3 sencillos pasos",
+    "step1Title": "1. Carga tu Audio Local",
+    "step1Desc": "Arrastra cualquier archivo MP3, WAV o M4A. Se procesa en segundos.",
+    "step2Title": "2. Ajusta los Controles de Silencio",
+    "step2Desc": "Personaliza el umbral y la duración máxima para respetar el ritmo de tu conversación.",
+    "step3Title": "3. Masteriza y Exporta",
+    "step3Desc": "Activa el pulido vocal, preescucha los cortes y descarga tu archivo en WAV o MP3 a 20x de velocidad."
+  },
+  "faq": {
+    "title": "Preguntas Frecuentes",
+    "q1": "¿Es PodEditor realmente gratuito y sin servidor?",
+    "a1": "¡Sí! Funciona íntegramente en tu navegador mediante Web Audio API y WebAssembly. Cero datos enviados a servidores externos.",
+    "q2": "¿Qué formatos son compatibles?",
+    "a2": "Puedes importar MP3, WAV, M4A, AAC, FLAC y OGG. Y exportar en WAV sin pérdida o MP3 de alta fidelidad.",
+    "q3": "¿Cómo funciona la detección de silencios?",
+    "a3": "Analiza la amplitud RMS de la onda de audio. Cualquier tramo que caiga por debajo de tu umbral y supere la duración máxima se marca para recorte.",
+    "q4": "¿Puedo conservar manualmente una pausa si quiero?",
+    "a4": "¡Sí! Haz clic en cualquier bloque de silencio en la gráfica para alternar entre recortar y mantener."
+  },
+  "footer": {
+    "madeWith": "Diseñado para podcasters y creadores independientes.",
+    "privacyNote": "Cero rastreo, cero cookies, cero subidas. Privacidad total en el cliente.",
+    "supportLink": "Apoyar en Ko-fi"
+  }
+}

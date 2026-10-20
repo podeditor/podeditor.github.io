@@ -1,0 +1,180 @@
+---
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import { useTranslations, type SupportedLanguage, languages } from '../i18n/ui';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  currentLang?: SupportedLanguage;
+}
+
+const {
+  currentLang = 'en',
+  title = 'PodEditor | Free Zero-Server Podcast Editor & Auto Silence Remover',
+  description = 'An ultra-minimal, 100% client-side web podcast studio. Automatically detect and strip dead air, apply one-click vocal polish, and export studio-ready audio directly in your browser with zero server uploads.',
+} = Astro.props;
+
+const t = useTranslations(currentLang);
+
+const canonicalUrl = currentLang === 'en'
+  ? 'https://podeditor.github.io/'
+  : `https://podeditor.github.io/${currentLang}`;
+
+// Structured Data Schemas
+const webApplicationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'PodEditor',
+  url: 'https://podeditor.github.io',
+  applicationCategory: 'MultimediaApplication',
+  operatingSystem: 'Any modern web browser (Chrome, Firefox, Safari, Edge)',
+  browserRequirements: 'Requires HTML5 Web Audio API support',
+  description: description,
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+  },
+  featureList: [
+    'Sub-second RMS silence detection and dead-air trimming',
+    'Customizable silence threshold (-60dB to -20dB) and max silence duration',
+    '15ms natural cosine micro-crossfades preventing clicks and pops',
+    'Interactive waveform canvas with click-to-toggle silence segments',
+    'One-click Podcast Voice Polish (80Hz highpass + 3kHz presence EQ + vocal compressor)',
+    'Auto-Level volume normalization to broadcast standards',
+    'Audition edits live with Skip Silences non-destructive playback',
+    'OfflineAudioContext 20x fast export to lossless WAV and 192kbps MP3',
+    '100% Client-side zero-server privacy architecture',
+  ],
+  author: {
+    '@type': 'Person',
+    name: 'Kishara',
+    url: 'https://ko-fi.com/kishara',
+  },
+};
+
+const howToSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: t.howTo.title,
+  description: 'Step-by-step guide to automatically stripping silence and dead air from podcast recordings in your browser.',
+  step: [
+    {
+      '@type': 'HowToStep',
+      name: t.howTo.step1Title,
+      text: t.howTo.step1Desc,
+      position: 1,
+    },
+    {
+      '@type': 'HowToStep',
+      name: t.howTo.step2Title,
+      text: t.howTo.step2Desc,
+      position: 2,
+    },
+    {
+      '@type': 'HowToStep',
+      name: t.howTo.step3Title,
+      text: t.howTo.step3Desc,
+      position: 3,
+    },
+  ],
+};
+
+const faqPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: t.faq.q1,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: t.faq.a1,
+      },
+    },
+    {
+      '@type': 'Question',
+      name: t.faq.q2,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: t.faq.a2,
+      },
+    },
+    {
+      '@type': 'Question',
+      name: t.faq.q3,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: t.faq.a3,
+      },
+    },
+    {
+      '@type': 'Question',
+      name: t.faq.q4,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: t.faq.a4,
+      },
+    },
+  ],
+};
+---
+
+<!doctype html>
+<html lang={currentLang} class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="keywords" content="free online podcast editor, auto silence remover online, truncate silence audio tool, remove dead air from podcast free, vocal polish audio, web audio editor, silence trimmer mp3 wav, client side podcast editor, audacity alternative online" />
+    <meta name="author" content="PodEditor Team" />
+    <meta name="theme-color" content="#202734" />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Favicon SVG -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23B7D894'%3E%3Cpath d='M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3zm5 9a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21H9v2h6v-2h-2v-3.08A7 7 0 0 0 19 11h-2z'/%3E%3C/svg%3E" />
+
+    <!-- Hreflang Multi-language Alternate Tags for Technical SEO -->
+    <link rel="alternate" hreflang="x-default" href="https://podeditor.github.io/" />
+    <link rel="alternate" hreflang="en" href="https://podeditor.github.io/" />
+    <link rel="alternate" hreflang="es" href="https://podeditor.github.io/es" />
+    <link rel="alternate" hreflang="pt" href="https://podeditor.github.io/pt" />
+    <link rel="alternate" hreflang="de" href="https://podeditor.github.io/de" />
+    <link rel="alternate" hreflang="fr" href="https://podeditor.github.io/fr" />
+    <link rel="alternate" hreflang="ja" href="https://podeditor.github.io/ja" />
+    <link rel="alternate" hreflang="zh" href="https://podeditor.github.io/zh" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content="PodEditor" />
+    <meta property="og:image" content="https://podeditor.github.io/og-image.png" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalUrl} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="https://podeditor.github.io/og-image.png" />
+
+    <!-- Google Fonts Preconnect (Inter & JetBrains Mono) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+
+    <!-- JSON-LD Structured Data Schemas -->
+    <script type="application/ld+json" set:html={JSON.stringify(webApplicationSchema)} />
+    <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
+    <script type="application/ld+json" set:html={JSON.stringify(faqPageSchema)} />
+  </head>
+  <body class="bg-canvas dark:bg-midnight text-midnight dark:text-canvas transition-colors duration-200 antialiased selection:bg-lime selection:text-midnight">
+    <Navbar currentLang={currentLang} />
+    <slot />
+    <Footer currentLang={currentLang} />
+  </body>
+</html>

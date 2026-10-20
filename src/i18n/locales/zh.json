@@ -1,0 +1,106 @@
+{
+  "navbar": {
+    "brand": "PodEditor",
+    "tagline": "免费纯本地播客编辑器",
+    "badgeLocal": "100% 本地与隐私安全",
+    "badgePrivacy": "零服务端上传",
+    "supportDev": "赞助开发者",
+    "themeLight": "浅色模式",
+    "themeDark": "深色模式"
+  },
+  "hero": {
+    "title": "免费零服务端播客编辑器与静音自动消除工具",
+    "subtitle": "毫秒级自动扫描并切除播客静音停顿，一键人声通透化母带处理，直接在浏览器中导出录音室级音质。100% 纯前端运行，音频绝不上云，保障隐私安全。",
+    "trustBadge1": "100% 浏览器客户端 DSP",
+    "trustBadge2": "无需漫长上传等待",
+    "trustBadge3": "无需登录 · 无时长限制"
+  },
+  "dropzone": {
+    "dragDropTitle": "拖拽播客音频文件到此处",
+    "dragDropSubtitle": "支持 MP3, WAV, M4A, AAC, OGG 任意时长录音",
+    "browseFiles": "选择本地音频文件",
+    "trySample": "或者试用交互式示例播客",
+    "loadingAudio": "正在本地解码音频波形...",
+    "errorDecoding": "音频解码失败，请确认文件格式是否受支持。"
+  },
+  "metrics": {
+    "statsTitle": "实时剪辑与静音统计",
+    "originalDuration": "原始总时长",
+    "editedDuration": "剪辑后时长",
+    "deadAirRemoved": "切除静音总长",
+    "timeSaved": "时长缩减率",
+    "cutsCount": "静音切除段数"
+  },
+  "controls": {
+    "sectionTitle": "智能静音切除控制器",
+    "thresholdLabel": "静音判定阈值",
+    "thresholdDesc": "低于此电平 (dB) 的音频将被识别为空白停顿",
+    "maxSilenceLabel": "最大允许停顿时间",
+    "maxSilenceDesc": "保留的自然说话呼吸间隙；超出此时间的停顿将被自动切短",
+    "paddingLabel": "自然过渡余量",
+    "paddingDesc": "保护字头辅音与呼吸声，防止切音生硬突兀",
+    "recalculating": "正在重新分析音频波形...",
+    "toggleInstructions": "💡 提示：点击波形画布上的任意红色静音块，可随时切换“切除”与“保留”"
+  },
+  "mastering": {
+    "sectionTitle": "专业级播客母带润色",
+    "voicePolishLabel": "播客人声通透增强",
+    "voicePolishDesc": "80Hz 低频杂音切除 + 3kHz 唇齿明亮度提升 + 温暖人声动态压缩",
+    "autoLevelLabel": "人声音量自动平衡",
+    "autoLevelDesc": "自动平抑过响爆笑，提升微弱细语至标准广播电平",
+    "speedLabel": "试听倍速",
+    "skipSilencesPreview": "试听剪辑效果（跳过静音）",
+    "play": "播放",
+    "pause": "暂停",
+    "stop": "停止",
+    "zoomIn": "放大波形",
+    "zoomOut": "缩小波形",
+    "resetZoom": "全局适应"
+  },
+  "export": {
+    "sectionTitle": "导出成品音频",
+    "formatLabel": "音频格式",
+    "exportWav": "WAV（无损 16-bit 母带）",
+    "exportMp3": "MP3（广播级 192kbps）",
+    "exportBtn": "导出已剪辑播客",
+    "exporting": "正在渲染音频并应用平滑微淡化...",
+    "exportDone": "导出完成！文件已开始下载。",
+    "loadNew": "编辑其他音频"
+  },
+  "features": {
+    "title": "为什么创作者选择 PodEditor",
+    "f1Title": "100% 本地运行 · 严密隐私",
+    "f1Desc": "未公开的播客专访与私密录音绝不会离开您的电脑。通过 Web Audio API 完全在本地内存处理。",
+    "f2Title": "无惧大文件 · 极速秒开",
+    "f2Desc": "无需等待数百兆音频上传至云端服务器。充分利用您本地设备算力，剪辑瞬间完成。",
+    "f3Title": "15ms 余弦平滑交叉淡化",
+    "f3Desc": "每次剪切拼接处均施加 15ms 余弦微淡化，彻底杜绝爆音、杂音与机械截断感。",
+    "f4Title": "实时无损试听预览",
+    "f4Desc": "在导出之前，开启“跳过静音”预览播放，零延迟校验剪辑后的节奏流畅度。"
+  },
+  "howTo": {
+    "title": "三步轻松切除空白停顿",
+    "step1Title": "1. 拖入本地音频",
+    "step1Desc": "拖入任意 MP3、WAV 或 M4A 文件，浏览器几秒内即可本地解码波形。",
+    "step2Title": "2. 微调静音滑块",
+    "step2Desc": "根据访谈说话语速调整静音阈值与最大保留停顿时间。",
+    "step3Title": "3. 母带润色并极速导出",
+    "step3Desc": "开启人声通透滤镜，试听剪辑效果，并以高达 20 倍速导出 WAV 或 MP3。"
+  },
+  "faq": {
+    "title": "常见问题解答",
+    "q1": "PodEditor 真的完全免费且不经过服务器吗？",
+    "a1": "是的！PodEditor 基于现代浏览器 Web Audio API 与 WebAssembly 构建，所有音频处理完全在您的电脑本地执行，不消耗任何服务端流量，无需注册登录。",
+    "q2": "支持导入和导出哪些音频格式？",
+    "a2": "支持导入 MP3, WAV, M4A, AAC, FLAC, OGG 等常见格式；支持导出无损 16 位 WAV 及高音质 MP3 文件。",
+    "q3": "静音自动消除的原理是什么？",
+    "a3": "算法以毫秒级窗口扫描音频 RMS 幅度能量。当某段音频低于设定分贝且持续时间超过设定限制时，将精准剔除多余静音并保留天然呼吸余量。",
+    "q4": "可以手动保留某段不想删除的停顿吗？",
+    "a4": "完全可以！在波形图上直接点击任意红色标记的静音块，即可自由在“切除”与“保留”之间切换。"
+  },
+  "footer": {
+    "madeWith": "专为全球独立播客主播与内容创作者倾心打造。",
+    "privacyNote": "无广告追踪 · 无 Cookie 留存 · 零文件上传 · 100% 浏览器本地隐私保护。",
+    "supportLink": "在 Ko-fi 上赞助开发者"
+  }
+}
