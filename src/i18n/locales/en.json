@@ -6,7 +6,15 @@
     "badgePrivacy": "Zero Server Uploads",
     "supportDev": "Support Developer",
     "themeLight": "Light Mode",
-    "themeDark": "Dark Mode"
+    "themeDark": "Dark Mode",
+    "saveToDevice": "Save to Device",
+    "offlineReady": "Offline Ready",
+    "offlineActive": "Offline Mode Active",
+    "installModalTitle": "Save PodEditor to Device",
+    "installModalDesc": "Install PodEditor as an ultra-fast desktop or mobile studio to edit podcasts 100% offline without internet.",
+    "installModalStepIos": "Tap Share 📤 then select 'Add to Home Screen' ➕ to use offline anytime.",
+    "installModalBtn": "Install Studio to Device",
+    "installModalClose": "Got it"
   },
   "hero": {
     "title": "Free Zero-Server Podcast Editor & Auto Silence Remover",

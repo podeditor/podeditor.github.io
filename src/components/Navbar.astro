@@ -17,7 +17,7 @@ function getLangUrl(langCode: string) {
 }
 ---
 
-<header class="sticky top-0 z-50 backdrop-blur-md bg-canvas/85 dark:bg-midnight/85 border-b border-lime/30 dark:border-navy transition-colors duration-200">
+<header class="sticky top-0 z-40 backdrop-blur-md bg-canvas/85 dark:bg-midnight/85 border-b border-lime/30 dark:border-navy transition-colors duration-200">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
     <!-- Brand Logo & 100% Local Badge -->
     <div class="flex items-center gap-3">
@@ -47,7 +47,7 @@ function getLangUrl(langCode: string) {
       </div>
     </div>
 
-    <!-- Right Controls: 7-Language Dropdown + Theme Switcher + Support CTA -->
+    <!-- Right Controls: 7-Language Dropdown + Save to Device + Theme Switcher + Support CTA -->
     <div class="flex items-center gap-2 sm:gap-3">
       <!-- 7-Language Selector Dropdown -->
       <div class="relative group" id="lang-selector">
@@ -98,6 +98,21 @@ function getLangUrl(langCode: string) {
         </div>
       </div>
 
+      <!-- Save to Device / Offline Studio Button -->
+      <button
+        id="pwa-install-btn"
+        type="button"
+        class="flex items-center gap-1.5 py-1.5 px-2.5 sm:px-3 rounded-full bg-white dark:bg-navy border border-slate-200 dark:border-navy text-xs font-bold text-midnight dark:text-canvas shadow-sm hover:border-lime transition-all focus:outline-none"
+        title={t.navbar.saveToDevice}
+        aria-label={t.navbar.saveToDevice}
+      >
+        <svg class="w-3.5 h-3.5 text-emerald-600 dark:text-lime" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+        </svg>
+        <span id="pwa-btn-text" class="hidden xl:inline">{t.navbar.saveToDevice}</span>
+        <span id="pwa-status-dot" class="w-2 h-2 rounded-full bg-lime animate-pulse hidden"></span>
+      </button>
+
       <!-- Light / Dark Mode Toggle Button -->
       <button
         id="theme-toggle"
@@ -115,7 +130,7 @@ function getLangUrl(langCode: string) {
         </svg>
       </button>
 
-      <!-- Support the Developer CTA Button (Collapses to Icon on Tablet/Mobile) -->
+      <!-- Support the Developer CTA Button (Collapses strictly to Icon on Tablet/Mobile) -->
       <a
         href="https://ko-fi.com/kishara"
         target="_blank"
@@ -132,8 +147,67 @@ function getLangUrl(langCode: string) {
   </div>
 </header>
 
+<!-- Ultra-Minimal Save to Device / Offline Modal -->
+<div
+  id="pwa-modal"
+  class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-midnight/70 backdrop-blur-sm hidden"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="bg-white dark:bg-midnight border border-lime/40 max-w-md w-full rounded-3xl p-6 sm:p-8 shadow-2xl relative text-center animate-fade-in">
+    <!-- Close button -->
+    <button
+      id="pwa-modal-close"
+      type="button"
+      class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 dark:bg-navy text-navy dark:text-canvas/70 hover:text-midnight dark:hover:text-canvas flex items-center justify-center transition-colors"
+      aria-label="Close"
+    >
+      ✕
+    </button>
+
+    <!-- App Icon -->
+    <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-mint dark:bg-navy flex items-center justify-center text-midnight dark:text-lime shadow-inner">
+      <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24">
+        <path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3zm5 9a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21H9v2h6v-2h-2v-3.08A7 7 0 0 0 19 11h-2z"/>
+      </svg>
+    </div>
+
+    <h3 class="text-xl sm:text-2xl font-black text-midnight dark:text-canvas mb-2">
+      {t.navbar.installModalTitle}
+    </h3>
+
+    <p class="text-xs sm:text-sm text-navy/80 dark:text-canvas/70 mb-6 leading-relaxed">
+      {t.navbar.installModalDesc}
+    </p>
+
+    <!-- Trigger native install prompt if available -->
+    <div id="pwa-prompt-container" class="mb-4">
+      <button
+        id="pwa-prompt-btn"
+        type="button"
+        class="w-full py-3.5 px-6 rounded-2xl bg-midnight hover:bg-midnight/90 dark:bg-lime dark:hover:bg-lime/90 text-canvas dark:text-midnight font-bold shadow-md transition-transform hover:scale-105 active:scale-95 text-sm"
+      >
+        {t.navbar.installModalBtn}
+      </button>
+    </div>
+
+    <!-- iOS / Safari Guide fallback -->
+    <div id="pwa-ios-instructions" class="p-3.5 rounded-2xl bg-canvas dark:bg-navy/70 border border-slate-200 dark:border-navy text-xs text-navy dark:text-canvas/80 font-medium">
+      {t.navbar.installModalStepIos}
+    </div>
+  </div>
+</div>
+
+<!-- Floating Ultra-Minimal Offline Mode Active Indicator -->
+<div id="offline-banner" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 hidden transition-all duration-300">
+  <div class="flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-midnight/95 dark:bg-navy/95 backdrop-blur-md border border-lime/60 text-xs font-bold text-canvas shadow-2xl">
+    <span class="w-2 h-2 rounded-full bg-lime animate-pulse"></span>
+    <span>⚡ {t.navbar.offlineActive} — Works 100% locally with zero internet</span>
+  </div>
+</div>
+
 <script is:inline>
-  // Theme logic for instant non-flash rendering
+  // 1. Theme Logic
   function initTheme() {
     const storedTheme = localStorage.getItem('theme');
     const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -152,12 +226,95 @@ function getLangUrl(langCode: string) {
 
   initTheme();
 
-  // Handle theme switcher click
   document.getElementById('theme-toggle')?.addEventListener('click', () => {
     const isDark = document.documentElement.classList.toggle('dark');
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
     initTheme();
-    // Dispatch an event so React island canvas can redraw colors
     window.dispatchEvent(new Event('theme-change'));
   });
+
+  // 2. PWA Save to Device & Offline Management
+  let deferredPrompt = null;
+  const pwaInstallBtn = document.getElementById('pwa-install-btn');
+  const pwaBtnText = document.getElementById('pwa-btn-text');
+  const pwaStatusDot = document.getElementById('pwa-status-dot');
+  const pwaModal = document.getElementById('pwa-modal');
+  const pwaModalClose = document.getElementById('pwa-modal-close');
+  const pwaPromptBtn = document.getElementById('pwa-prompt-btn');
+  const pwaPromptContainer = document.getElementById('pwa-prompt-container');
+  const offlineBanner = document.getElementById('offline-banner');
+
+  // Check if running in standalone display mode (already installed)
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+
+  if (isStandalone) {
+    if (pwaBtnText) pwaBtnText.textContent = 'Offline Ready';
+    pwaStatusDot?.classList.remove('hidden');
+  }
+
+  // Capture beforeinstallprompt event
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+  });
+
+  // App Installed Event
+  window.addEventListener('appinstalled', () => {
+    deferredPrompt = null;
+    if (pwaBtnText) pwaBtnText.textContent = 'Offline Ready';
+    pwaStatusDot?.classList.remove('hidden');
+    pwaModal?.classList.add('hidden');
+  });
+
+  // Open modal / prompt on button click
+  pwaInstallBtn?.addEventListener('click', async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        deferredPrompt = null;
+        if (pwaBtnText) pwaBtnText.textContent = 'Offline Ready';
+        pwaStatusDot?.classList.remove('hidden');
+      }
+    } else {
+      pwaModal?.classList.remove('hidden');
+    }
+  });
+
+  pwaModalClose?.addEventListener('click', () => {
+    pwaModal?.classList.add('hidden');
+  });
+
+  pwaModal?.addEventListener('click', (e) => {
+    if (e.target === pwaModal) {
+      pwaModal.classList.add('hidden');
+    }
+  });
+
+  pwaPromptBtn?.addEventListener('click', async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        deferredPrompt = null;
+      }
+      pwaModal?.classList.add('hidden');
+    } else {
+      pwaModal?.classList.add('hidden');
+    }
+  });
+
+  // 3. Online / Offline Status Detection
+  function updateOnlineStatus() {
+    if (!navigator.onLine) {
+      offlineBanner?.classList.remove('hidden');
+      pwaStatusDot?.classList.remove('hidden');
+    } else {
+      offlineBanner?.classList.add('hidden');
+    }
+  }
+
+  window.addEventListener('online', updateOnlineStatus);
+  window.addEventListener('offline', updateOnlineStatus);
+  updateOnlineStatus();
 </script>

@@ -6,7 +6,15 @@
     "badgePrivacy": "Zero Uploads para Servidor",
     "supportDev": "Apoiar o Desenvolvedor",
     "themeLight": "Modo Claro",
-    "themeDark": "Modo Escuro"
+    "themeDark": "Modo Escuro",
+    "saveToDevice": "Salvar no Dispositivo",
+    "offlineReady": "Pronto Offline",
+    "offlineActive": "Modo Offline Ativo",
+    "installModalTitle": "Salvar PodEditor no Dispositivo",
+    "installModalDesc": "Instale o PodEditor no seu computador ou celular para editar podcasts 100% offline sem conexão à internet.",
+    "installModalStepIos": "Toque em Compartilhar 📤 e selecione 'Adicionar à Tela de Início' ➕.",
+    "installModalBtn": "Instalar no Dispositivo",
+    "installModalClose": "Entendi"
   },
   "hero": {
     "title": "Editor de Podcasts Gratuito Sem Servidor e Removedor Automático de Silêncio",

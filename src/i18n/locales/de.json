@@ -6,7 +6,15 @@
     "badgePrivacy": "Keine Server-Uploads",
     "supportDev": "Entwickler unterstützen",
     "themeLight": "Heller Modus",
-    "themeDark": "Dunkler Modus"
+    "themeDark": "Dunkler Modus",
+    "saveToDevice": "Auf Gerät speichern",
+    "offlineReady": "Offline bereit",
+    "offlineActive": "Offline-Modus aktiv",
+    "installModalTitle": "PodEditor auf Gerät installieren",
+    "installModalDesc": "Installieren Sie PodEditor auf Ihrem PC oder Smartphone, um Podcasts 100% offline ohne Internet zu bearbeiten.",
+    "installModalStepIos": "Tippen Sie auf Teilen 📤 und wählen Sie 'Zum Home-Bildschirm' ➕.",
+    "installModalBtn": "Auf Gerät installieren",
+    "installModalClose": "Verstanden"
   },
   "hero": {
     "title": "Kostenloser Serverloser Podcast-Editor & Stille-Entferner",

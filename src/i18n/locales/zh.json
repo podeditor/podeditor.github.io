@@ -6,7 +6,15 @@
     "badgePrivacy": "零服务端上传",
     "supportDev": "赞助开发者",
     "themeLight": "浅色模式",
-    "themeDark": "深色模式"
+    "themeDark": "深色模式",
+    "saveToDevice": "保存到本地设备",
+    "offlineReady": "离线可用",
+    "offlineActive": "离线运行模式",
+    "installModalTitle": "将 PodEditor 保存到本地设备",
+    "installModalDesc": "将 PodEditor 安装为独立桌面或手机应用，在无网络连接（飞机、差旅或离线录音棚）时完全离线剪辑播客。",
+    "installModalStepIos": "点击浏览器分享按钮 📤，并选择“添加到主屏幕” ➕ 即可离线使用。",
+    "installModalBtn": "立即保存/安装到设备",
+    "installModalClose": "我知道了"
   },
   "hero": {
     "title": "免费零服务端播客编辑器与静音自动消除工具",

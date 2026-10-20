@@ -6,7 +6,15 @@
     "badgePrivacy": "サーバー送信ゼロ",
     "supportDev": "開発者を支援",
     "themeLight": "ライトモード",
-    "themeDark": "ダークモード"
+    "themeDark": "ダークモード",
+    "saveToDevice": "端末に保存（オフライン利用）",
+    "offlineReady": "オフライン対応済み",
+    "offlineActive": "オフラインモード稼働中",
+    "installModalTitle": "PodEditorを端末にインストール",
+    "installModalDesc": "PCやスマートフォンにアプリとして保存すると、ネット接続なし（完全オフライン）でいつでもポッドキャスト編集が行えます。",
+    "installModalStepIos": "Safariの共有ボタン 📤 をタップし、「ホーム画面に追加」 ➕ を選択してください。",
+    "installModalBtn": "アプリを端末にインストール",
+    "installModalClose": "閉じる"
   },
   "hero": {
     "title": "完全ブラウザ完結型ポッドキャスト編集＆無音自動カットツール",

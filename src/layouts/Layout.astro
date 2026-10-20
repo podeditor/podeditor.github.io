@@ -134,8 +134,13 @@ const faqPageSchema = {
     <meta name="theme-color" content="#202734" />
     <link rel="canonical" href={canonicalUrl} />
 
-    <!-- Favicon SVG -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23B7D894'%3E%3Cpath d='M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3zm5 9a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21H9v2h6v-2h-2v-3.08A7 7 0 0 0 19 11h-2z'/%3E%3C/svg%3E" />
+    <!-- Favicon SVG & PWA Icons -->
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="PodEditor" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
 
     <!-- Hreflang Multi-language Alternate Tags for Technical SEO -->
     <link rel="alternate" hreflang="x-default" href="https://podeditor.github.io/" />
@@ -176,5 +181,22 @@ const faqPageSchema = {
     <Navbar currentLang={currentLang} />
     <slot />
     <Footer currentLang={currentLang} />
+
+    <!-- Service Worker Registration & Offline Support -->
+    <script is:inline>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker
+            .register('/sw.js')
+            .then((reg) => {
+              // Notify UI that offline cache is active
+              window.dispatchEvent(new CustomEvent('sw-registered', { detail: reg }));
+            })
+            .catch((err) => {
+              console.warn('Service Worker registration note:', err);
+            });
+        });
+      }
+    </script>
   </body>
 </html>
