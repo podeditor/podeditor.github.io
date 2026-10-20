@@ -487,9 +487,33 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
 
   // Re-bake background whenever buffer, cuts, or zoom changes
   useEffect(() => {
-    bakeBackgroundWaveform();
+    bakeBackgroundWaveform(silenceRegions);
     renderCanvasFrame(playheadTimeRef.current);
   }, [bakeBackgroundWaveform, renderCanvasFrame, silenceRegions]);
+
+  // Re-run silence detection whenever sliders change in real time
+  useEffect(() => {
+    if (audioBuffer) {
+      runSilenceDetection(audioBuffer);
+    }
+  }, [thresholdDb, maxSilenceDuration, naturalPadding, runSilenceDetection, audioBuffer]);
+
+  // Toggle region between cut and keep on user click
+  const toggleRegion = useCallback(
+    (regionId: number) => {
+      if (!audioBuffer) return;
+      setSilenceRegions((prev) => {
+        const next = prev.map((r) => (r.id === regionId ? { ...r, cut: !r.cut } : r));
+        silenceRegionsRef.current = next;
+        const calculatedMetrics = calculateMetrics(audioBuffer.duration, next);
+        setMetrics(calculatedMetrics);
+        bakeBackgroundWaveform(next);
+        renderCanvasFrame(playheadTimeRef.current);
+        return next;
+      });
+    },
+    [audioBuffer, bakeBackgroundWaveform, renderCanvasFrame]
+  );
 
   // Handle Resize
   useEffect(() => {
