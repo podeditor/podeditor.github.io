@@ -7,13 +7,13 @@
     "supportDev": "Apoiar o Desenvolvedor",
     "themeLight": "Modo Claro",
     "themeDark": "Modo Escuro",
-    "saveToDevice": "Salvar no Dispositivo",
+    "saveToDevice": "Adicionar à Tela de Início",
     "offlineReady": "Pronto Offline",
     "offlineActive": "Modo Offline Ativo",
-    "installModalTitle": "Salvar PodEditor no Dispositivo",
-    "installModalDesc": "Instale o PodEditor no seu computador ou celular para editar podcasts 100% offline sem conexão à internet.",
+    "installModalTitle": "Adicionar PodEditor à Tela de Início",
+    "installModalDesc": "Instale o PodEditor na sua tela de início ou computador para editar podcasts 100% offline sem conexão à internet.",
     "installModalStepIos": "Toque em Compartilhar 📤 e selecione 'Adicionar à Tela de Início' ➕.",
-    "installModalBtn": "Instalar no Dispositivo",
+    "installModalBtn": "Adicionar à Tela de Início",
     "installModalClose": "Entendi"
   },
   "hero": {

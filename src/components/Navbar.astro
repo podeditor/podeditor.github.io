@@ -20,15 +20,16 @@ function getLangUrl(langCode: string) {
 <header class="sticky top-0 z-40 backdrop-blur-md bg-canvas/85 dark:bg-midnight/85 border-b border-lime/30 dark:border-navy transition-colors duration-200">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
     <!-- Brand Logo & 100% Local Badge -->
-    <div class="flex items-center gap-3">
-      <a href={getLangUrl(currentLang)} class="flex items-center gap-2.5 group">
-        <!-- Logo Icon with Sound Wave & Mic styling -->
-        <div class="w-9 h-9 rounded-xl bg-midnight dark:bg-lime text-canvas dark:text-midnight flex items-center justify-center font-black shadow-md transition-transform group-hover:scale-105">
+    <div class="flex items-center gap-2 sm:gap-3">
+      <a href={getLangUrl(currentLang)} class="flex items-center gap-2.5 group" title="PodEditor">
+        <!-- Logo Icon with Sound Wave & Mic styling (Always visible) -->
+        <div class="w-9 h-9 rounded-xl bg-midnight dark:bg-lime text-canvas dark:text-midnight flex items-center justify-center font-black shadow-md transition-transform group-hover:scale-105 shrink-0">
           <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
             <path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3zm5 9a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21H9v2h6v-2h-2v-3.08A7 7 0 0 0 19 11h-2z"/>
           </svg>
         </div>
-        <div class="flex flex-col">
+        <!-- Brand Name & Tagline Text: STRICTLY HIDDEN ON MOBILE (<640px), VISIBLE ON TABLET/DESKTOP -->
+        <div class="hidden sm:flex flex-col">
           <span class="font-black text-lg tracking-tight text-midnight dark:text-canvas leading-none">
             PodEditor
           </span>
@@ -38,12 +39,12 @@ function getLangUrl(langCode: string) {
         </div>
       </a>
 
-      <!-- 100% Local & Private Badge (Full on desktop, icon pill on mobile) -->
-      <div class="flex items-center gap-1.5 bg-mint/70 dark:bg-navy border border-lime/50 rounded-full py-1 px-2.5 text-xs font-bold text-midnight dark:text-lime shadow-sm">
+      <!-- 100% Local & Private Badge (Icon-only on mobile, label on tablet/desktop) -->
+      <div class="flex items-center gap-1.5 bg-mint/70 dark:bg-navy border border-lime/50 rounded-full py-1 px-2 text-xs font-bold text-midnight dark:text-lime shadow-sm shrink-0">
         <svg class="w-3.5 h-3.5 text-emerald-600 dark:text-lime" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
         </svg>
-        <span class="hidden sm:inline">{t.navbar.badgeLocal}</span>
+        <span class="hidden md:inline">{t.navbar.badgeLocal}</span>
       </div>
     </div>
 
@@ -98,10 +99,11 @@ function getLangUrl(langCode: string) {
         </div>
       </div>
 
-      <!-- Save to Device / Offline Studio Button -->
+      <!-- Add to Home Screen / Offline Studio Button -->
       <button
         id="pwa-install-btn"
         type="button"
+        data-offline-ready={t.navbar.offlineReady}
         class="flex items-center gap-1.5 py-1.5 px-2.5 sm:px-3 rounded-full bg-white dark:bg-navy border border-slate-200 dark:border-navy text-xs font-bold text-midnight dark:text-canvas shadow-sm hover:border-lime transition-all focus:outline-none"
         title={t.navbar.saveToDevice}
         aria-label={t.navbar.saveToDevice}
@@ -246,9 +248,10 @@ function getLangUrl(langCode: string) {
 
   // Check if running in standalone display mode (already installed)
   const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  const offlineReadyText = pwaInstallBtn?.getAttribute('data-offline-ready') || 'Offline Ready';
 
   if (isStandalone) {
-    if (pwaBtnText) pwaBtnText.textContent = 'Offline Ready';
+    if (pwaBtnText) pwaBtnText.textContent = offlineReadyText;
     pwaStatusDot?.classList.remove('hidden');
   }
 
@@ -261,7 +264,7 @@ function getLangUrl(langCode: string) {
   // App Installed Event
   window.addEventListener('appinstalled', () => {
     deferredPrompt = null;
-    if (pwaBtnText) pwaBtnText.textContent = 'Offline Ready';
+    if (pwaBtnText) pwaBtnText.textContent = offlineReadyText;
     pwaStatusDot?.classList.remove('hidden');
     pwaModal?.classList.add('hidden');
   });

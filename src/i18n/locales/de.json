@@ -7,13 +7,13 @@
     "supportDev": "Entwickler unterstützen",
     "themeLight": "Heller Modus",
     "themeDark": "Dunkler Modus",
-    "saveToDevice": "Auf Gerät speichern",
+    "saveToDevice": "Zum Home-Bildschirm",
     "offlineReady": "Offline bereit",
     "offlineActive": "Offline-Modus aktiv",
-    "installModalTitle": "PodEditor auf Gerät installieren",
-    "installModalDesc": "Installieren Sie PodEditor auf Ihrem PC oder Smartphone, um Podcasts 100% offline ohne Internet zu bearbeiten.",
+    "installModalTitle": "PodEditor zum Home-Bildschirm hinzufügen",
+    "installModalDesc": "Fügen Sie PodEditor zu Ihrem Home-Bildschirm oder Desktop hinzu, um Podcasts 100% offline ohne Internet zu bearbeiten.",
     "installModalStepIos": "Tippen Sie auf Teilen 📤 und wählen Sie 'Zum Home-Bildschirm' ➕.",
-    "installModalBtn": "Auf Gerät installieren",
+    "installModalBtn": "Zum Home-Bildschirm hinzufügen",
     "installModalClose": "Verstanden"
   },
   "hero": {

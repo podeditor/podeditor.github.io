@@ -7,13 +7,13 @@
     "supportDev": "Support Developer",
     "themeLight": "Light Mode",
     "themeDark": "Dark Mode",
-    "saveToDevice": "Save to Device",
+    "saveToDevice": "Add to Home Screen",
     "offlineReady": "Offline Ready",
     "offlineActive": "Offline Mode Active",
-    "installModalTitle": "Save PodEditor to Device",
-    "installModalDesc": "Install PodEditor as an ultra-fast desktop or mobile studio to edit podcasts 100% offline without internet.",
+    "installModalTitle": "Add PodEditor to Home Screen",
+    "installModalDesc": "Install PodEditor to your home screen or desktop to edit podcasts 100% offline without internet.",
     "installModalStepIos": "Tap Share 📤 then select 'Add to Home Screen' ➕ to use offline anytime.",
-    "installModalBtn": "Install Studio to Device",
+    "installModalBtn": "Add to Home Screen",
     "installModalClose": "Got it"
   },
   "hero": {

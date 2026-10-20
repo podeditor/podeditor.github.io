@@ -7,13 +7,13 @@
     "supportDev": "開発者を支援",
     "themeLight": "ライトモード",
     "themeDark": "ダークモード",
-    "saveToDevice": "端末に保存（オフライン利用）",
+    "saveToDevice": "ホーム画面に追加",
     "offlineReady": "オフライン対応済み",
     "offlineActive": "オフラインモード稼働中",
-    "installModalTitle": "PodEditorを端末にインストール",
-    "installModalDesc": "PCやスマートフォンにアプリとして保存すると、ネット接続なし（完全オフライン）でいつでもポッドキャスト編集が行えます。",
+    "installModalTitle": "PodEditorをホーム画面に追加",
+    "installModalDesc": "ホーム画面やデスクトップに追加すると、ネット接続なし（完全オフライン）でいつでもポッドキャスト編集が行えます。",
     "installModalStepIos": "Safariの共有ボタン 📤 をタップし、「ホーム画面に追加」 ➕ を選択してください。",
-    "installModalBtn": "アプリを端末にインストール",
+    "installModalBtn": "ホーム画面に追加",
     "installModalClose": "閉じる"
   },
   "hero": {
