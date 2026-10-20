@@ -11,6 +11,7 @@
   "dependencies": {
     "@astrojs/react": "^4.2.0",
     "@astrojs/tailwind": "^5.1.5",
+    "@breezystack/lamejs": "^1.2.7",
     "astro": "^5.4.2",
     "canvas-confetti": "^1.9.4",
     "clsx": "^2.1.1",

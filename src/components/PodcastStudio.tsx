@@ -19,6 +19,7 @@ import {
   ShieldCheck,
   Zap,
   Info,
+  AlertCircle,
 } from 'lucide-react';
 import {
   decodeAudioFile,
@@ -65,6 +66,7 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
   const [isExporting, setIsExporting] = useState<boolean>(false);
   const [exportProgress, setExportProgress] = useState<number>(0);
   const [exportSuccess, setExportSuccess] = useState<boolean>(false);
+  const [exportError, setExportError] = useState<string | null>(null);
 
   // Silence Regions & Metrics
   const [silenceRegions, setSilenceRegions] = useState<SilenceRegion[]>([]);
@@ -76,24 +78,28 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
     cutsCount: 0,
   });
 
-  // Playback Engine State
+  // Playback State & Tracking
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [currentTime, setCurrentTime] = useState<number>(0);
-  const [zoomLevel, setZoomLevel] = useState<number>(1.0); // 1.0 to 5.0
+  const [zoomLevel, setZoomLevel] = useState<number>(1.0);
 
-  // Refs for Web Audio Playback
+  // Refs for Web Audio & Playhead
   const audioContextRef = useRef<AudioContext | null>(null);
   const sourceNodeRef = useRef<AudioBufferSourceNode | null>(null);
   const startTimeOffsetRef = useRef<number>(0);
   const playbackStartedAtRef = useRef<number>(0);
+  const currentTimeRef = useRef<number>(0);
   const animationFrameRef = useRef<number | null>(null);
+  const lastStateUpdateRef = useRef<number>(0);
 
   // Refs for Canvas & Waveform
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const waveformPeaksRef = useRef<Float32Array | null>(null);
+  const silenceRegionsRef = useRef<SilenceRegion[]>([]);
+  silenceRegionsRef.current = silenceRegions;
 
-  // Recalculate Silence Detection when buffer or sliders change
+  // Recalculate Silence Detection
   const runSilenceDetection = useCallback(
     (buf: AudioBuffer) => {
       const regions = detectSilenceRegions(buf, {
@@ -108,21 +114,21 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
     [thresholdDb, maxSilenceDuration, naturalPadding]
   );
 
-  // Compute Waveform Peaks for fast Canvas rendering
+  // Generate Waveform Peaks
   const generateWaveformPeaks = useCallback((buf: AudioBuffer) => {
     const numSamples = 2000;
     const peaks = new Float32Array(numSamples);
     const left = buf.getChannelData(0);
     const right = buf.numberOfChannels > 1 ? buf.getChannelData(1) : left;
-    const step = Math.floor(buf.length / numSamples);
+    const step = Math.max(1, Math.floor(buf.length / numSamples));
 
     for (let i = 0; i < numSamples; i++) {
       let max = 0;
       const start = i * step;
       const end = Math.min(start + step, buf.length);
       for (let j = start; j < end; j += 4) {
-        const valL = Math.abs(left[j]);
-        const valR = Math.abs(right[j]);
+        const valL = Math.abs(left[j] || 0);
+        const valR = Math.abs(right[j] || 0);
         const val = Math.max(valL, valR);
         if (val > max) max = val;
       }
@@ -131,12 +137,31 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
     waveformPeaksRef.current = peaks;
   }, []);
 
+  // Stop Playback cleanly without false onended triggers
+  const stopPlayback = useCallback(() => {
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current);
+      animationFrameRef.current = null;
+    }
+
+    if (sourceNodeRef.current) {
+      sourceNodeRef.current.onended = null;
+      try { sourceNodeRef.current.stop(); } catch (e) {}
+      try { sourceNodeRef.current.disconnect(); } catch (e) {}
+      sourceNodeRef.current = null;
+    }
+
+    setIsPlaying(false);
+    setCurrentTime(currentTimeRef.current);
+  }, []);
+
   // Handle File Load
   const handleFile = async (file: File) => {
     try {
       setIsDecoding(true);
       setErrorMessage(null);
       setExportSuccess(false);
+      setExportError(null);
       stopPlayback();
 
       const decoded = await decodeAudioFile(file);
@@ -144,21 +169,23 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
       setFileName(file.name);
       generateWaveformPeaks(decoded);
       runSilenceDetection(decoded);
+      currentTimeRef.current = 0;
       setCurrentTime(0);
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      setErrorMessage(t.dropzone.errorDecoding);
+      setErrorMessage(err?.message || t.dropzone.errorDecoding);
     } finally {
       setIsDecoding(false);
     }
   };
 
-  // Handle Sample Podcast Click
+  // Handle Sample Podcast Load
   const handleLoadSample = () => {
     try {
       setIsDecoding(true);
       setErrorMessage(null);
       setExportSuccess(false);
+      setExportError(null);
       stopPlayback();
 
       const sample = generateSamplePodcastAudio();
@@ -166,8 +193,9 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
       setFileName('podcast-interview-sample.wav');
       generateWaveformPeaks(sample);
       runSilenceDetection(sample);
+      currentTimeRef.current = 0;
       setCurrentTime(0);
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
       setErrorMessage(t.dropzone.errorDecoding);
     } finally {
@@ -175,14 +203,14 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
     }
   };
 
-  // Re-run silence detection whenever sliders change
+  // Re-run silence detection on slider adjustment
   useEffect(() => {
     if (audioBuffer) {
       runSilenceDetection(audioBuffer);
     }
   }, [thresholdDb, maxSilenceDuration, naturalPadding, runSilenceDetection, audioBuffer]);
 
-  // Toggle single silence region between cut and keep on user click
+  // Toggle single silence region between cut and keep
   const toggleRegion = (regionId: number) => {
     if (!audioBuffer) return;
     setSilenceRegions((prev) => {
@@ -193,111 +221,138 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
     });
   };
 
-  // Keep Speech Segments memoized
+  // Calculate kept speech segments
   const keptSegments: SpeechRegion[] = useMemo(() => {
     if (!audioBuffer) return [];
     return calculateKeptSegments(audioBuffer.duration, silenceRegions);
   }, [audioBuffer, silenceRegions]);
 
-  // Web Audio Playback Engine
-  const startPlayback = (offsetSeconds: number) => {
-    if (!audioBuffer) return;
+  // Robust Audio Playback Engine
+  const startPlayback = useCallback(
+    async (offsetSeconds: number) => {
+      if (!audioBuffer) return;
 
-    if (!audioContextRef.current || audioContextRef.current.state === 'closed') {
-      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
-      audioContextRef.current = new AudioCtx();
-    }
-    const ctx = audioContextRef.current;
-    if (ctx.state === 'suspended') {
-      ctx.resume();
-    }
-
-    if (sourceNodeRef.current) {
-      try {
-        sourceNodeRef.current.stop();
-        sourceNodeRef.current.disconnect();
-      } catch (e) {}
-    }
-
-    const source = ctx.createBufferSource();
-    source.buffer = audioBuffer;
-    source.playbackRate.value = playbackSpeed;
-
-    // Connect through mastering preview chain if toggled
-    let lastNode: AudioNode = source;
-
-    if (voicePolish) {
-      const hp = ctx.createBiquadFilter();
-      hp.type = 'highpass';
-      hp.frequency.value = 80;
-      lastNode.connect(hp);
-      lastNode = hp;
-
-      const presence = ctx.createBiquadFilter();
-      presence.type = 'peaking';
-      presence.frequency.value = 3000;
-      presence.gain.value = 3.2;
-      lastNode.connect(presence);
-      lastNode = presence;
-    }
-
-    lastNode.connect(ctx.destination);
-
-    const safeOffset = Math.max(0, Math.min(offsetSeconds, audioBuffer.duration - 0.05));
-    source.start(0, safeOffset);
-
-    sourceNodeRef.current = source;
-    startTimeOffsetRef.current = safeOffset;
-    playbackStartedAtRef.current = ctx.currentTime;
-    setIsPlaying(true);
-
-    source.onended = () => {
-      // Natural playback finish
-      if (ctx.currentTime - playbackStartedAtRef.current >= (audioBuffer.duration - safeOffset) / playbackSpeed) {
-        setIsPlaying(false);
-        setCurrentTime(0);
+      // Initialize or resume AudioContext on user interaction
+      if (!audioContextRef.current || audioContextRef.current.state === 'closed') {
+        const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+        audioContextRef.current = new AudioCtx();
       }
-    };
-  };
 
-  const stopPlayback = () => {
-    if (sourceNodeRef.current) {
+      const ctx = audioContextRef.current;
+      if (ctx.state === 'suspended') {
+        try {
+          await ctx.resume();
+        } catch (e) {}
+      }
+
+      // Safely disconnect existing source
+      if (sourceNodeRef.current) {
+        sourceNodeRef.current.onended = null;
+        try { sourceNodeRef.current.stop(); } catch (e) {}
+        try { sourceNodeRef.current.disconnect(); } catch (e) {}
+        sourceNodeRef.current = null;
+      }
+
+      // If at or past the end, loop back to start
+      let safeOffset = offsetSeconds;
+      if (safeOffset >= audioBuffer.duration - 0.08 || safeOffset < 0) {
+        safeOffset = 0;
+      }
+
+      const source = ctx.createBufferSource();
+      source.buffer = audioBuffer;
+      source.playbackRate.value = playbackSpeed;
+
+      let lastNode: AudioNode = source;
+
+      // Realtime Preview Mastering Filter Graph
+      if (voicePolish) {
+        const hp = ctx.createBiquadFilter();
+        hp.type = 'highpass';
+        hp.frequency.value = 80;
+        lastNode.connect(hp);
+        lastNode = hp;
+
+        const presence = ctx.createBiquadFilter();
+        presence.type = 'peaking';
+        presence.frequency.value = 3000;
+        presence.gain.value = 3.2;
+        lastNode.connect(presence);
+        lastNode = presence;
+      }
+
+      lastNode.connect(ctx.destination);
+
       try {
-        sourceNodeRef.current.stop();
-        sourceNodeRef.current.disconnect();
-      } catch (e) {}
-      sourceNodeRef.current = null;
-    }
-    setIsPlaying(false);
-  };
+        source.start(0, safeOffset);
+      } catch (err) {
+        console.error('Audio playback start failed:', err);
+        return;
+      }
+
+      sourceNodeRef.current = source;
+      startTimeOffsetRef.current = safeOffset;
+      playbackStartedAtRef.current = ctx.currentTime;
+      currentTimeRef.current = safeOffset;
+      setIsPlaying(true);
+
+      source.onended = () => {
+        // Natural playback completion
+        if (sourceNodeRef.current === source) {
+          sourceNodeRef.current = null;
+          setIsPlaying(false);
+          currentTimeRef.current = 0;
+          setCurrentTime(0);
+        }
+      };
+    },
+    [audioBuffer, playbackSpeed, voicePolish]
+  );
+
+  // Seek / Scrub directly to time position
+  const seekTo = useCallback(
+    (targetTime: number, continuePlaying?: boolean) => {
+      if (!audioBuffer) return;
+      const safeTime = Math.max(0, Math.min(targetTime, audioBuffer.duration));
+      currentTimeRef.current = safeTime;
+      setCurrentTime(safeTime);
+
+      if (isPlaying || continuePlaying) {
+        startPlayback(safeTime);
+      }
+    },
+    [audioBuffer, isPlaying, startPlayback]
+  );
 
   const togglePlayPause = () => {
     if (isPlaying) {
       stopPlayback();
     } else {
-      startPlayback(currentTime);
+      startPlayback(currentTimeRef.current);
     }
   };
 
-  // Playhead Animation Loop & Skip Silences Check
+  // Playhead Animation Loop & Skip Silences
   useEffect(() => {
     if (!isPlaying || !audioBuffer || !audioContextRef.current) return;
 
     const ctx = audioContextRef.current;
 
     const updatePlayhead = () => {
+      if (!isPlaying || !audioContextRef.current) return;
+
       const elapsed = (ctx.currentTime - playbackStartedAtRef.current) * playbackSpeed;
       let calculatedTime = startTimeOffsetRef.current + elapsed;
 
-      // Skip Silences in preview check
+      // Skip Silences in preview mode
       if (skipSilencesInPreview) {
-        for (const cut of silenceRegions) {
+        const currentCuts = silenceRegionsRef.current;
+        for (let i = 0; i < currentCuts.length; i++) {
+          const cut = currentCuts[i];
           if (cut.cut && calculatedTime >= cut.start && calculatedTime < cut.end) {
-            // Jump forward to cut.end
-            calculatedTime = cut.end + 0.02;
-            stopPlayback();
-            setCurrentTime(calculatedTime);
-            startPlayback(calculatedTime);
+            // Jump forward seamlessly past the silence cut
+            const nextTime = Math.min(cut.end + 0.02, audioBuffer.duration - 0.05);
+            seekTo(nextTime, true);
             return;
           }
         }
@@ -305,9 +360,18 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
 
       if (calculatedTime >= audioBuffer.duration) {
         stopPlayback();
+        currentTimeRef.current = 0;
         setCurrentTime(0);
       } else {
-        setCurrentTime(calculatedTime);
+        currentTimeRef.current = calculatedTime;
+
+        // Throttle React state updates to ~5 times per second to prevent 60fps re-renders
+        const now = performance.now();
+        if (now - lastStateUpdateRef.current > 180) {
+          lastStateUpdateRef.current = now;
+          setCurrentTime(calculatedTime);
+        }
+
         animationFrameRef.current = requestAnimationFrame(updatePlayhead);
       }
     };
@@ -319,9 +383,9 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [isPlaying, audioBuffer, playbackSpeed, skipSilencesInPreview, silenceRegions]);
+  }, [isPlaying, audioBuffer, playbackSpeed, skipSilencesInPreview, seekTo, stopPlayback]);
 
-  // Handle Playback Speed change while playing
+  // Adjust playback speed dynamically
   useEffect(() => {
     if (sourceNodeRef.current && isPlaying) {
       sourceNodeRef.current.playbackRate.value = playbackSpeed;
@@ -340,18 +404,16 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
     const height = canvas.height;
     const duration = audioBuffer.duration;
     const peaks = waveformPeaksRef.current;
+    const playheadTime = currentTimeRef.current;
 
-    // Detect dark mode from documentElement
     const isDark = document.documentElement.classList.contains('dark');
 
-    // Clear canvas
+    // Clear background
     ctx.clearRect(0, 0, width, height);
-
-    // Canvas Background
     ctx.fillStyle = isDark ? '#202734' : '#F9FCF6';
     ctx.fillRect(0, 0, width, height);
 
-    // Center baseline
+    // Center Baseline
     const centerY = height / 2;
     ctx.strokeStyle = isDark ? '#36415A' : '#E2E8F0';
     ctx.lineWidth = 1;
@@ -360,30 +422,28 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
     ctx.lineTo(width, centerY);
     ctx.stroke();
 
-    // 1. Draw Silence Regions Overlay
+    // 1. Draw Silence Cut Regions
     for (const region of silenceRegions) {
       const xStart = (region.start / duration) * width;
       const xEnd = (region.end / duration) * width;
       const regWidth = Math.max(2, xEnd - xStart);
 
       if (region.cut) {
-        // Red / Striped cut block
+        // Red cut block with border
         ctx.fillStyle = isDark ? 'rgba(239, 68, 68, 0.28)' : 'rgba(239, 68, 68, 0.18)';
         ctx.fillRect(xStart, 0, regWidth, height);
 
-        // Border
         ctx.strokeStyle = isDark ? 'rgba(239, 68, 68, 0.7)' : 'rgba(239, 68, 68, 0.5)';
         ctx.lineWidth = 1;
         ctx.strokeRect(xStart, 0, regWidth, height);
 
-        // Subtle cut badge / diagonal stripes
         ctx.fillStyle = isDark ? '#F87171' : '#DC2626';
         ctx.font = '10px Inter, sans-serif';
         if (regWidth > 35) {
           ctx.fillText(`✂ -${region.duration.toFixed(1)}s`, xStart + 4, 16);
         }
       } else {
-        // Kept pause block (soft mint / neutral)
+        // Kept pause block
         ctx.fillStyle = isDark ? 'rgba(54, 65, 90, 0.4)' : 'rgba(224, 248, 199, 0.35)';
         ctx.fillRect(xStart, 0, regWidth, height);
       }
@@ -399,7 +459,6 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
       const x = i * barWidth;
       const timeAtBar = (i / numBars) * duration;
 
-      // Check if bar is inside an active cut silence region
       let inCut = false;
       for (const cut of silenceRegions) {
         if (cut.cut && timeAtBar >= cut.start && timeAtBar <= cut.end) {
@@ -409,24 +468,20 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
       }
 
       if (inCut) {
-        // Stripped dead air color
         ctx.fillStyle = isDark ? '#7F1D1D' : '#FCA5A5';
-      } else if (timeAtBar <= currentTime) {
-        // Active / played speech: glowing fresh sage lime
+      } else if (timeAtBar <= playheadTime) {
         ctx.fillStyle = '#B7D894';
       } else {
-        // Unplayed speech: muted navy
         ctx.fillStyle = isDark ? '#4A5568' : '#36415A';
       }
 
-      // Rounded vertical bars (top & bottom mirrored)
       const topY = centerY - barHeight;
       const barThickness = Math.max(1, barWidth - 0.5);
       ctx.fillRect(x, topY, barThickness, barHeight * 2);
     }
 
     // 3. Draw Playhead Indicator Line
-    const playheadX = (currentTime / duration) * width;
+    const playheadX = (playheadTime / duration) * width;
     ctx.strokeStyle = '#B7D894';
     ctx.lineWidth = 2.5;
     ctx.shadowColor = 'rgba(183, 216, 148, 0.8)';
@@ -435,15 +490,15 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
     ctx.moveTo(playheadX, 0);
     ctx.lineTo(playheadX, height);
     ctx.stroke();
-    ctx.shadowBlur = 0; // reset
+    ctx.shadowBlur = 0;
 
-    // Playhead thumb head
+    // Playhead head thumb
     ctx.fillStyle = '#B7D894';
     ctx.beginPath();
     ctx.arc(playheadX, 8, 5, 0, Math.PI * 2);
     ctx.fill();
 
-    // 4. Time Scale Labels (at bottom of canvas)
+    // 4. Time Scale Labels
     ctx.fillStyle = isDark ? '#94A3B8' : '#64748B';
     ctx.font = '10px JetBrains Mono, monospace';
     const intervalSecs = duration > 120 ? 30 : duration > 60 ? 15 : 5;
@@ -451,14 +506,24 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
       const x = (s / duration) * width;
       ctx.fillText(`${s}s`, x + 3, height - 6);
     }
-  }, [audioBuffer, silenceRegions, currentTime]);
+  }, [audioBuffer, silenceRegions]);
 
-  // Redraw when state updates
+  // Continuously draw playhead during playback
   useEffect(() => {
-    drawWaveform();
-  }, [drawWaveform]);
+    let animId: number;
+    const renderLoop = () => {
+      drawWaveform();
+      if (isPlaying) {
+        animId = requestAnimationFrame(renderLoop);
+      }
+    };
+    renderLoop();
+    return () => {
+      if (animId) cancelAnimationFrame(animId);
+    };
+  }, [isPlaying, drawWaveform]);
 
-  // Handle Canvas Resize
+  // Resize handler
   useEffect(() => {
     const handleResize = () => {
       const canvas = canvasRef.current;
@@ -475,7 +540,7 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
     return () => window.removeEventListener('resize', handleResize);
   }, [zoomLevel, drawWaveform]);
 
-  // Handle Scrubbing & Clicking on Waveform (Region toggle or scrub)
+  // Canvas Click / Region Toggle / Scrub
   const handleCanvasClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
     if (!canvas || !audioBuffer) return;
@@ -493,30 +558,27 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
     if (clickedRegion) {
       toggleRegion(clickedRegion.id);
     } else {
-      // Normal scrub
-      setCurrentTime(clickedTime);
-      if (isPlaying) {
-        stopPlayback();
-        startPlayback(clickedTime);
-      }
+      seekTo(clickedTime);
     }
   };
 
-  // Export Pipeline (OfflineAudioContext + Micro-crossfade + MP3/WAV)
+  // Export Edited Podcast (WAV or MP3)
   const handleExport = async () => {
-    if (!audioBuffer || keptSegments.length === 0) return;
+    if (!audioBuffer) return;
 
     try {
       setIsExporting(true);
-      setExportProgress(5);
+      setExportProgress(10);
       setExportSuccess(false);
+      setExportError(null);
+      stopPlayback();
 
-      // Render audio with 15ms cosine crossfades and mastering
+      // Render audio with 15ms cosine micro-crossfades and mastering
       const renderedBuffer = await renderEditedAudio(
         audioBuffer,
         keptSegments,
         { voicePolish, autoLevel },
-        (progress) => setExportProgress(progress)
+        (progress) => setExportProgress(Math.min(90, Math.round(progress)))
       );
 
       let blob: Blob;
@@ -527,29 +589,30 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
         blob = encodeWav(renderedBuffer);
         extension = 'wav';
       } else {
-        // MP3 with chunked progress
-        blob = await encodeMp3(renderedBuffer, (mp3Prog) => {
-          setExportProgress(70 + Math.round(mp3Prog * 0.28));
+        // Chunked MP3 encoding using @breezystack/lamejs
+        blob = await encodeMp3(renderedBuffer, (prog) => {
+          setExportProgress(Math.min(98, 70 + Math.round(prog * 0.28)));
         });
         extension = 'mp3';
       }
 
       setExportProgress(100);
 
-      // Trigger instant browser download
+      // Trigger browser download
       const downloadUrl = URL.createObjectURL(blob);
       const anchor = document.createElement('a');
-      const baseName = fileName.replace(/\.[^/.]+$/, '');
+      const baseName = fileName.replace(/\.[^/.]+$/, '') || 'podcast-edited';
       anchor.href = downloadUrl;
       anchor.download = `${baseName}-podedited.${extension}`;
       document.body.appendChild(anchor);
       anchor.click();
       document.body.removeChild(anchor);
-      URL.revokeObjectURL(downloadUrl);
+
+      setTimeout(() => URL.revokeObjectURL(downloadUrl), 8000);
 
       setExportSuccess(true);
 
-      // Confetti burst for satisfaction
+      // Reward burst
       try {
         confetti({
           particleCount: 80,
@@ -558,9 +621,9 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
           colors: ['#B7D894', '#E0F8C7', '#202734'],
         });
       } catch (e) {}
-    } catch (err) {
+    } catch (err: any) {
       console.error('Export failed:', err);
-      alert('Export failed. Please check console.');
+      setExportError(err?.message || 'Export error occurred. Please try again.');
     } finally {
       setIsExporting(false);
     }
@@ -568,7 +631,7 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
 
   return (
     <div className="w-full max-w-6xl mx-auto px-4 py-6">
-      {/* 1. DROPZONE / LOCAL LOADER (Shown when no audio is loaded) */}
+      {/* 1. DROPZONE / LOCAL LOADER */}
       {!audioBuffer && (
         <div className="bg-white dark:bg-navy/50 border-2 border-dashed border-lime/60 dark:border-lime/40 rounded-3xl p-8 md:p-14 text-center shadow-soft-card transition-all hover:border-lime">
           <div className="w-16 h-16 md:w-20 md:h-20 mx-auto mb-6 rounded-2xl bg-mint/50 dark:bg-navy flex items-center justify-center text-midnight dark:text-lime shadow-inner">
@@ -606,7 +669,6 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
             </button>
           </div>
 
-          {/* Privacy badge under dropzone */}
           <div className="mt-8 flex items-center justify-center gap-2 text-xs text-navy/70 dark:text-canvas/60">
             <ShieldCheck className="w-4 h-4 text-lime" />
             <span>100% Client-Side. Your audio never touches a server.</span>
@@ -620,14 +682,15 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
           )}
 
           {errorMessage && (
-            <div className="mt-6 p-4 rounded-xl bg-red-100 text-red-700 text-sm font-medium">
-              {errorMessage}
+            <div className="mt-6 p-4 rounded-xl bg-red-100 text-red-700 text-sm font-medium flex items-center justify-center gap-2">
+              <AlertCircle className="w-4 h-4" />
+              <span>{errorMessage}</span>
             </div>
           )}
         </div>
       )}
 
-      {/* 2. PODCAST STUDIO INTERFACE (Shown once audio is loaded) */}
+      {/* 2. PODCAST STUDIO INTERFACE */}
       {audioBuffer && (
         <div className="space-y-6">
           {/* Top Audio File Bar & Reset */}
@@ -779,7 +842,7 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
                 <button
                   onClick={() => {
                     stopPlayback();
-                    setCurrentTime(0);
+                    seekTo(0);
                   }}
                   className="w-10 h-10 rounded-xl bg-canvas dark:bg-navy hover:bg-slate-200 dark:hover:bg-navy/80 text-navy dark:text-canvas flex items-center justify-center transition-colors"
                   title={t.mastering.stop}
@@ -1046,6 +1109,22 @@ export default function PodcastStudio({ currentLang = defaultLang }: Props) {
               </div>
               <button
                 onClick={() => setExportSuccess(false)}
+                className="text-xs underline hover:opacity-80"
+              >
+                Dismiss
+              </button>
+            </div>
+          )}
+
+          {/* Export Error Notification */}
+          {exportError && (
+            <div className="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border border-rose-300 dark:border-rose-800 text-rose-800 dark:text-rose-300 text-sm font-semibold flex items-center justify-between animate-fade-in">
+              <div className="flex items-center gap-2">
+                <AlertCircle className="w-5 h-5 text-rose-600 dark:text-rose-400" />
+                <span>{exportError}</span>
+              </div>
+              <button
+                onClick={() => setExportError(null)}
                 className="text-xs underline hover:opacity-80"
               >
                 Dismiss
