@@ -11,7 +11,7 @@
 
 <p align="center">
   <a href="https://podeditor.github.io"><img src="https://img.shields.io/badge/Live%20Studio-podeditor.github.io-B7D894?style=for-the-badge&logo=google-chrome&logoColor=202734" alt="Live Demo" /></a>
-  <a href="https://ko-fi.com/kishara"><img src="https://img.shields.io/badge/Support-Ko--fi-FF5E5B?style=for-the-badge&logo=kofi&logoColor=white" alt="Ko-fi" /></a>
+  <a href="https://kisharadilshan.gumroad.com/coffee"><img src="https://img.shields.io/badge/Support-Buy%20Me%20a%20Coffee-FF90E8?style=for-the-badge&logo=gumroad&logoColor=black" alt="Support the Developer" /></a>
   <img src="https://img.shields.io/badge/License-MIT-36415A?style=for-the-badge" alt="MIT License" />
   <img src="https://img.shields.io/badge/Architecture-100%25%20Client--Side-202734?style=for-the-badge" alt="100% Client-Side" />
 </p>
@@ -231,7 +231,7 @@ PodEditor leverages modern HTML5 Web Audio and WebAssembly APIs supported across
 
 PodEditor is completely free and open-source software built for independent podcast creators and audio storytellers. If it saves you hours of tedious editing, consider supporting ongoing development:
 
-👉 **[Support on Ko-fi](https://ko-fi.com/kishara)**
+👉 **[Support the Developer (Buy Me a Coffee)](https://kisharadilshan.gumroad.com/coffee)**
 
 ---
 
